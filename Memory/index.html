@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>Memory Game</title>
+    <link rel="stylesheet" href="stylesheet/style.css">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row align-items-center">
+        <h1 class="col-sm-12 text-center">Memory Game</h1>
+    </div>
+    <div class="row no-gutters">
+        <div class="col-lg-8">
+            <!-- INFO ROW name, input,diff and button -->
+            <div class="col-12">
+                <!-- Heading and timer row -->
+                <div class="row no-gutters">
+                    <div class="col-sm-11 text-center">
+                        <h5>Igra Memorije</h5>
+                    </div>
+                    <div class="col-sm-1 border border-info text-center">
+                        <p id="timer">31</p>
+                    </div>
+                </div>
+                <!-- Input, radio buttons and button in the same row -->
+                <!-- Input name -->
+                <div class="row no-gutters">
+                    <form action="" class="col-sm-12" id="form">
+                        <input type="text" class="col-12 text-center" id="inputName">
+                    </form>
+                </div>
+                <!-- Difficulty radio buttons -->
+                <div class="row no-gutters justify-content-sm-around justify-content-md-center justify-content-xl-center">
+                    <label class="col-6 col-sm-6 col-md-auto text-center">
+                        <input type="radio" value="4" name="difficulty" id="easy" checked="checked">Lako
+                    </label>
+                    <label class="col-6 col-sm-6 col-md-auto text-center">
+                        <input type="radio" value="6" name="difficulty" id="middle">Srednje
+                    </label>
+                    <label class="col-6 col-sm-6 col-md-auto text-center">
+                        <input type="radio" value="8" name="difficulty" id="hard">Tesko
+                    </label>
+                    <label class="col-6 col-sm-6 col-md-auto text-center">
+                        <input type="radio" value="10" name="difficulty" id="expert">Ekspert
+                    </label>
+                </div>
+                <!-- Start new game button -->
+                <div class="row no-gutters">
+                    <div class="col-sm-12 text-center">
+                        <button class="btn btn-light btn-outline-dark align-self-center" onclick='rotateMe(this);' id="button">Start New Game</button>
+                    </div>
+                </div>
+            </div>
+            <!-- GAME BOARD STARTS-->
+            <div class="col-12 border-info align-items-center text-center" id="gameTable">
+                <p>Hello</p>
+                <div id="gridDiv">
+
+                </div>
+            </div>
+        </div>
+        <!-- BEST RESULTS -->
+        <div class="col-lg-4">
+            <div class="col-12">
+                <div class="col-12 text-center">
+                    <h5>Najbolji rezultati</h5>
+                </div>
+                <div class="row no-gutters">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
+
+<!--<div class="flip-card">-->
+<!--    <div class="flip-card-inner">-->
+<!--        <div class="flip-card-front">-->
+<!--            <img src="images/closedCard.png" style="height: 195px;width: 195px" alt="">-->
+<!--        </div>-->
+<!--        <div class="flip-card-back">-->
+<!--            <img src="images/1.png" alt="Avatar" style="width:195px;height:195px;">-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->

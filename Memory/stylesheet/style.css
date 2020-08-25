@@ -1,0 +1,36 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body {
+    display: flex;
+    background: url("/MemoryGame/Memory/images/geometry.png") ;
+    padding-top: 20px;
+}
+/*#gameTable {*/
+/*    border: 1px solid blue;*/
+/*}*/
+
+#gridDiv {
+    /* width: 80%; */
+    border: 1px solid #a6d5e3;
+    border-radius: 5%;
+    padding: 15px;
+    margin: auto;
+}
+
+.rotated {
+    -webkit-transform: rotate(20deg);
+            transform: rotate(20deg);
+  }
+[class*="col-"]{
+    padding-left: 0;
+    padding-right: 0;
+}
+/*@media only screen and (max-width: 992px) {*/
+/*#gridDiv {*/
+/*    width: 100%;*/
+/*}*/
+
+/*}*/
