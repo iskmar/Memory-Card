@@ -1,18 +1,39 @@
 let fetchInputRadio = document.querySelectorAll("input[type='radio']");
-// let form = document.getElementById('form');
+let form = document.getElementById('form');
+let time = document.getElementById('timer');
 let btnStartGame = document.getElementById('button');
+let fetchGameTable = document.getElementById('gridDiv');
 let imgArray = [];
 let openedCards = 0;
 let flippedCards = [];
 let flippedCardsId = [];
+let countNum = 0;
+let timer = null;
 
 let getLevelValue = (array) => {
     for (let i = 0; i < array.length; i++) {
+        // array[i].addEventListener('click', () => {
+        //     location.reload();
+        // })
         if (array[i].checked) {
             return Number(array[i].value);
         }
     };
 }
+
+
+
+
+let startGameTimer = () => {
+    if (timer == null) {
+        timer = setInterval(() => {
+            countNum++;
+            time.innerHTML = countNum;
+        }, 1000);
+    }
+}
+
+
 getLevelValue(fetchInputRadio);
 let count = getLevelValue(fetchInputRadio) ** 2;
 
@@ -33,27 +54,17 @@ function shuffleArray(array) {
     return array;
 }
 
-
-// btnStartGame.addEventListener('click', () => {
-//     location.reload();
-// })
 pushImgArray(count);
-
-    // fetchGameTable.style.position = 'relative';
-    
+btnStartGame.addEventListener('click', () => {
+    location.reload();
+    // getBoard();
+});
 getBoard();
 function getBoard() {
-    // let fetchGame = document.getElementById('gameTable');
-    // fetchGame.style.position = 'relative';
-    let fetchGameTable = document.getElementById('gridDiv');
-    fetchGameTable.style.width = '100%';
-    fetchGameTable.style.position = 'relative';
-    // fetchGameTable.style.height = '50%';
+    
 
     shuffleArray(imgArray);
-    let output = '';
 
-    console.log(imgArray.length);
     for (let i = 0; i < imgArray.length; i++) {
         let divCard = document.createElement('div');
         let imgFront = document.createElement('img');
@@ -62,9 +73,13 @@ function getBoard() {
         let imgBack = document.createElement('img');
 
         if(count == 16 ) {
+            fetchGameTable.style.width = '50%';
+            fetchGameTable.style.position = 'relative';
             divCard.style.width = '20%';
             divCard.style.height = '20%';
         } else if (count == 36) {
+            fetchGameTable.style.width = '70%';
+            fetchGameTable.style.position = 'relative';
             divCard.style.width = '14%';
             // divCard.style.height = 'auto';
         } else if (count == 64 ) {
@@ -72,12 +87,9 @@ function getBoard() {
         } else {
             divCard.style.width = '8%';
         }
-        // divCard.setAttribute('onClick', `checkCards(this, ${imgArray[i]})`);
-        // divCard.setAttribute('id',i);
-        // divCard.setAttribute('data-id',`data_${imgArray[i]}`);
-        console.log(output);
+
         
-        divCard.style.backgroundColor = 'orange';
+        // divCard.style.backgroundColor = 'orange';
         divCard.style.display = 'inline-block';
         divCard.style.position = 'relative';
         imgFront.setAttribute('src',`images/${imgArray[i]}.png`);
@@ -94,14 +106,20 @@ function getBoard() {
         imgBack.addEventListener('click', function() {
             checkCards(this);
             this.classList.toggle('flipped');
+            
         });
         divCard.appendChild(imgFront);
         divCard.appendChild(imgBack);
         fetchGameTable.appendChild(divCard);
 
+        divCard.classList.add('timer');
+        divCard.addEventListener('click', () => {
+            if(divCard.classList.contains('timer')){
+                startGameTimer();
+                divCard.classList.remove('timer');
+            }
+        })
     }
-// fetchGame.appendChild(fetchGameTable);
-    // fetchGameTable = output;
 }
 
 
@@ -137,12 +155,13 @@ else {
 // Create input name and store it in local storage
 // once stored  call a function to retrieve currentName
 // and replace input with newly made input
-hasFlipped = false;
-let firstCard, secondCard;
-// checkCards();
 function checkCards(card) {
-    if(flippedCards.length < 2) {
 
+if (card.classList.contains('flipped') > 2) {
+    return;
+ }
+    if(flippedCards.length <= 1) {
+        
         if(flippedCards.length === 0 ) {
             // input card
             flippedCards.push(card.dataset.id);
@@ -150,11 +169,11 @@ function checkCards(card) {
 
         } else if (flippedCards.length == 1 ) {
             // input card value
+            isProcessing = true; // SET IS PROCESSING BEFORE TIME
             flippedCards.push(card.dataset.id);
             flippedCardsId.push(card.id);
-
             if( flippedCards[0] == flippedCards[1]) {
-
+                
                 console.log('same');
                 openedCards += 2;
 
@@ -162,27 +181,40 @@ function checkCards(card) {
                 flippedCardsId = [];
                 if(openedCards === imgArray.length ) {
                     console.log('goodbye');
+                    clearInterval(startGameTimer());
+                    setTimeout(() => {
+                        let answer = confirm("Da li zelite novu igru?");
+                        if (answer) {
+                            location.reload();
+                        } else {
+                            return;
+                        }
+                    }, 500);
+                    
                 }
             } else {
                 // close the cards and reset styles
+
                 function closeCard() {
-                    // setTimeout(() => {
-                        let card1 = document.getElementById(`${flippedCardsId[0]}`);
+                    let card1 = document.getElementById(`${flippedCardsId[0]}`);
                     let card2 = document.getElementById(`${flippedCardsId[1]}`);
+
                     if (card1.classList.contains('flipped')) {
                         card1.classList.toggle('flipped');
                     }
                     if (card2.classList.contains('flipped')) {
                         card2.classList.toggle('flipped');
                     }
+                    
                     flippedCards = [];
                     flippedCardsId = [];
-                    // }, 200);
+                    isProcessing = false;
                 }
-                setTimeout(closeCard,500);
+                setTimeout(closeCard,600);
             }
         }
     }
-}
+} 
+
 
 
