@@ -54,7 +54,7 @@
                 <!-- Start new game button -->
                 <div class="row no-gutters">
                     <div class="col-sm-12 text-center">
-                        <button class="btn btn-light btn-outline-dark align-self-center" onclick='rotateMe(this);' id="button">Start New Game</button>
+                        <button class="btn btn-light btn-outline-dark align-self-center" id="button">Start New Game</button>
                     </div>
                 </div>
             </div>
@@ -72,8 +72,42 @@
                 <div class="col-12 text-center">
                     <h5>Najbolji rezultati</h5>
                 </div>
+                <div class="row no-gutters justify-content-around">
+                        <button class="btn btn-light btn-outline-dark col-6 col-md-3">Lako</button>
+                        <button class="btn btn-light btn-outline-dark col-6 col-md-3">Srednje</button>
+                        <button class="btn btn-light btn-outline-dark col-6 col-md-3">Tesko</button>
+                        <button class="btn btn-light btn-outline-dark col-6 col-md-3">Ekspert</button>
+                </div>
                 <div class="row no-gutters">
-
+                    <table id="table" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Username</th>
+                              <th scope="col">Best time</th>
+                              <th scope="col">Moves</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">3</th>
+                                <td colspan="2">Larry the Bird</td>
+                                <td>@twitter</td>
+                              </tr>
+                          </tbody>
+                    </table>
                 </div>
             </div>
         </div>
