@@ -35,9 +35,9 @@ function shuffleArray(array) {
 pushImgArray(count);
 shuffleArray(imgArray);
 
-btnStartGame.addEventListener('click', () => {
-    location.reload();
-})
+// btnStartGame.addEventListener('click', () => {
+//     location.reload();
+// })
 getBoard();
 function getBoard() {
     let fetchGameTable = document.getElementById('gridDiv');
@@ -358,16 +358,11 @@ else {
 // Create input name and store it in local storage
 // once stored  call a function to retrieve currentName
 // and replace input with newly made input
-hasFlipped = false;
+let lockBoard = false;
 let firstCard, secondCard;
 // checkCards();
 function checkCards(card) {
 
-    // let card1 = card.setAttribute('data-id','')
-    
-
-    // console.log(array);
-    // array.push(card);
     
     if(flippedCards.length < 2) {
 
@@ -399,19 +394,19 @@ function checkCards(card) {
                     let card1 = document.getElementById(`${flippedCardsId[0]}`);
                     let card2 = document.getElementById(`${flippedCardsId[1]}`);
                     console.log(card1,card2);
-                    // console.log(flippedCards);
-                    // console.log(card1);
-                    // let cardClass = document.getElementsByClassName('flipped');
-                    // let x = Array.from(cardClass);
-                    // console.log(cardClass.length);
-                    // for (let i = 0; i < array.length; i++) {
-                    //     if(array[i].classList.contains("flipped")) {
-                    //         console.log(array[i]);
-                            // setTimeout(() => {
-                                // for (let index = 0; index < array.length; index++) {
-                                //     const element = array[index];
+                    console.log(flippedCards);
+                    console.log(card1);
+                    let cardClass = document.getElementsByClassName('flipped');
+                    let x = Array.from(cardClass);
+                    console.log(cardClass.length);
+                    for (let i = 0; i < array.length; i++) {
+                        if(array[i].classList.contains("flipped")) {
+                            console.log(array[i]);
+                            setTimeout(() => {
+                                for (let index = 0; index < array.length; index++) {
+                                    const element = array[index];
                                     
-                                // }
+                                }
 
                                 // for (let i = 0; i < flippedCardsId.length; i++) {
                                     // let cardUnflip = document.getElementById(`${flippedCardsId[i]}`);
@@ -425,15 +420,13 @@ function checkCards(card) {
                                         card2.style.zIndex = 2;
                                     }
                                     
-                                // }
-                                // console.log(array);
-                                // console.log(card1);
-                                // this.style.zIndex = 2;
-                                // console.log('1');
-                                // card.style.zIndex = 2;
-                                // card.classList.toggle('flipped');
-                                // cardClass[i].style.zIndex = 2;
-                            // }, 700);
+                                }
+
+                                console.log('1');
+                                card.style.zIndex = 2;
+                                card.classList.toggle('flipped');
+                                cardClass[i].style.zIndex = 2;
+                            }, 700);
                     //     }
                         
 
@@ -451,7 +444,70 @@ function checkCards(card) {
                 setTimeout(closeCard,800);
             }
         }
+    } else {
+
     }
+}
 }
 
 
+
+function getUserChoice(userInput) {
+    userInput = userInput.toLowerCase();
+    if (userInput === "bear" || userInput === "human" || userInput === "gun") {
+    return userInput;
+  }  else {
+    return "Please enter a valid option ";
+  }
+ }
+ 
+ function getComputerChoice() {
+     let randomNumber = Math.floor(Math.random() * 3);
+     if (randomNumber === 0) {
+         return "bear";
+     } else if (randomNumber === 1) {
+         return "gun";
+     } else {
+         return "human";
+     }
+ }
+ 
+ function determineWinner(userChoice, computerChoice) {
+     if (userChoice === computerChoice) {
+         return "It is a tie!"
+     }
+     if (userChoice === "human") {
+         if (computerChoice === "bear") {
+          return "You have been mauled by bear!"   
+         } else {
+             return "You have disarmed a gun";
+         }
+     }
+ 
+     if (userChoice === "bear") {
+         if (computerChoice === "human") {
+          return "You ate human!"   
+         } else {
+             return "You have been shooted by a gun!";
+         }
+     }
+ 
+     if (userChoice === "gun") {
+         if (computerChoice === "bear") {
+          return "You have shoot a bear!"   
+         } else {
+             return "Your gun have been disarmed";
+         }
+     }
+ }
+ 
+ function playGame() {
+   let promptUserChoice = prompt("Please choose bear, human or gun");
+   let userChoice = getUserChoice(promptUserChoice);
+   let computerChoice = getComputerChoice();
+   console.log(userChoice);
+   console.log(computerChoice);
+   console.log(determineWinner(userChoice, computerChoice));
+ }
+ 
+ playGame();
