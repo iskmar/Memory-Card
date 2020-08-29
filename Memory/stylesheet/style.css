@@ -3,9 +3,10 @@
     margin: 0;
     box-sizing: border-box;
 }
-/* body {
+body {
     background: url('/MemoryGame/Memory/images/geometry.png');
-} */
+    /* height: 100vh; */
+}
 
 
 img {
@@ -14,4 +15,24 @@ img {
 
 .flipped {
     visibility: hidden;
+}
+#gameTable {
+    margin-bottom: 72px;
+}
+footer {
+    /* display: flex; */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    margin-top: 10%;
+}
+.container-fluid {
+    margin-bottom: 100px;
+    position: relative;
+    min-height: 100vh;
+}
+@media only screen and (min-width: 401px) and (max-width: 960px) {
+    #gridDiv {
+        width: 90%;
+    }
 }

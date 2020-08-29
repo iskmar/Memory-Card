@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-       <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -12,119 +14,111 @@
     <title>Memory Game</title>
     <link rel="stylesheet" href="stylesheet/style.css">
 </head>
+
 <body>
-<div class="container-fluid">
-    <div class="row align-items-center">
-        <h1 class="col-sm-12 text-center">Memory Game</h1>
-    </div>
-    <div class="row no-gutters">
-        <div class="col-lg-8">
-            <!-- INFO ROW name, input,diff and button -->
-            <div class="col-12">
-                <!-- Heading and timer row -->
-                <div class="row no-gutters">
-                    <div class="col-sm-11 text-center">
-                        <h5>Igra Memorije</h5>
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <h1 class="col-sm-12 text-center">Memory Game</h1>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-lg-8">
+                <!-- INFO ROW name, input,diff and button -->
+                <div class="col-12">
+                    <!-- Heading and timer row -->
+                    <div class="row no-gutters">
+                        <div class="col-sm-11 text-center">
+                            <h5>Igra Memorije</h5>
+                        </div>
+                        <div class="col-sm-1 text-center">
+                            <p id="timer" class="my-auto align-self-center"></p>
+                        </div>
                     </div>
-                    <div class="col-sm-1 text-center">
-                        <p id="timer" class="my-auto align-self-center"></p>
+                    <!-- Input, radio buttons and button in the same row -->
+                    <!-- Input name -->
+                    <div class="row no-gutters">
+                        <form action="" class="col-sm-12" id="form">
+                            <input type="text" class="col-12 text-center" id="inputName">
+                        </form>
+                    </div>
+                    <!-- Difficulty radio buttons -->
+                    <div
+                        class="row no-gutters justify-content-sm-around justify-content-md-center justify-content-xl-center">
+                        <label class="col col-sm-auto col-md-auto text-center">
+                            <input type="radio" value="4" name="difficulty" id="easy" checked="checked">Lako
+                        </label>
+                        <label class="col col-sm-auto col-md-auto text-center">
+                            <input type="radio" value="6" name="difficulty" id="middle">Srednje
+                        </label>
+                        <label class="col col-sm-auto col-md-auto text-center">
+                            <input type="radio" value="8" name="difficulty" id="hard">Tesko
+                        </label>
+                        <label class="col col-sm-auto col-md-auto text-center">
+                            <input type="radio" value="10" name="difficulty" id="expert">Ekspert
+                        </label>
+                    </div>
+                    <!-- Start new game button -->
+                    <div class="row no-gutters">
+                        <div class="col-sm-12 text-center">
+                            <!-- <button class="btn btn-light btn-outline-dark align-self-center" id="button">Start New Game</button> -->
+                            <a href="#welcome" class="btn btn-light btn-outline-dark align-self-center"
+                                id="button">Start New Game</a>
+                        </div>
                     </div>
                 </div>
-                <!-- Input, radio buttons and button in the same row -->
-                <!-- Input name -->
-                <div class="row no-gutters">
-                    <form action="" class="col-sm-12" id="form">
-                        <input type="text" class="col-12 text-center" id="inputName">
-                    </form>
-                </div>
-                <!-- Difficulty radio buttons -->
-                <div class="row no-gutters justify-content-sm-around justify-content-md-center justify-content-xl-center">
-                    <label class="col-6 col-sm-6 col-md-auto text-center">
-                        <input type="radio" value="4" name="difficulty" id="easy" checked="checked">Lako
-                    </label>
-                    <label class="col-6 col-sm-6 col-md-auto text-center">
-                        <input type="radio" value="6" name="difficulty" id="middle">Srednje
-                    </label>
-                    <label class="col-6 col-sm-6 col-md-auto text-center">
-                        <input type="radio" value="8" name="difficulty" id="hard">Tesko
-                    </label>
-                    <label class="col-6 col-sm-6 col-md-auto text-center">
-                        <input type="radio" value="10" name="difficulty" id="expert">Ekspert
-                    </label>
-                </div>
-                <!-- Start new game button -->
-                <div class="row no-gutters">
-                    <div class="col-sm-12 text-center">
-                         <button class="btn btn-light btn-outline-dark align-self-center" id="button">Start New Game</button>
-<!--                        <a href="#gridDiv" class="btn btn-light btn-outline-dark align-self-center" id="button">Start New Game</a>-->
+                <!-- GAME BOARD STARTS-->
+                <div class="col-12 border-info align-items-center text-center" id="gameTable">
+                    <p>Hello</p>
+                    <div id="gridDiv">
+                        <div id="welcome">
+
+                        </div>
+
                     </div>
                 </div>
             </div>
-            <!-- GAME BOARD STARTS-->
-            <div class="col-12 border-info align-items-center text-center" id="gameTable">
-                <p>Hello</p>
-                <div id="gridDiv">
-                    <div id="welcome">
-
+            <!-- BEST RESULTS -->
+            <div class="col-lg-4">
+                <div class="col-12">
+                    <div class="col-12 text-center">
+                        <h5>Najbolji rezultati</h5>
                     </div>
-
+                    <div class="row no-gutters justify-content-around">
+                        <button class="btn btn-light btn-outline-dark col-6 col-sm-6 col-md-3" name="tableButtons"
+                            id="easy">Lako</button>
+                        <button class="btn btn-light btn-outline-dark col-6 col-sm-6 col-md-3" name="tableButtons"
+                            id="middle">Srednje</button>
+                        <button class="btn btn-light btn-outline-dark col-6 col-sm-6 col-md-3" name="tableButtons"
+                            id="hard">Tesko</button>
+                        <button class="btn btn-light btn-outline-dark col-6 col-sm-6 col-md-3" name="tableButtons"
+                            id="expert">Ekspert</button>
+                    </div>
+                    <div class="row no-gutters">
+                        <table id="table" class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Username</th>
+                                    <th scope="col">Best time</th>
+                                    <th scope="col">Moves</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody">
+                                <!-- Table goes here-->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- BEST RESULTS -->
-        <div class="col-lg-4">
-            <div class="col-12">
-                <div class="col-12 text-center">
-                    <h5>Najbolji rezultati</h5>
-                </div>
-                <div class="row no-gutters justify-content-around">
-                        <button class="btn btn-light btn-outline-dark col-6 col-md-3" name="tableButtons" id="easy">Lako</button>
-                        <button class="btn btn-light btn-outline-dark col-6 col-md-3" name="tableButtons" id="middle">Srednje</button>
-                        <button class="btn btn-light btn-outline-dark col-6 col-md-3" name="tableButtons" id="hard">Tesko</button>
-                        <button class="btn btn-light btn-outline-dark col-6 col-md-3" name="tableButtons" id="expert">Ekspert</button>
-                </div>
-                <div class="row no-gutters">
-                    <table id="table" class="table table-hover table-bordered">
-                        <thead>
-                            <tr>
-                              <th scope="col">#</th>
-                              <th scope="col">Username</th>
-                              <th scope="col">Best time</th>
-                              <th scope="col">Moves</th>
-                            </tr>
-                          </thead>
-                          <tbody id="tbody">
-                            <!-- <tr>
-                                <th>1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                              </tr>
-                              <tr>
-                                <th>2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                              </tr>
-                              <tr>
-                                <th>3</th>
-                                <td colspan="2">Larry the Bird</td>
-                                <td>@twitter</td>
-                              </tr> -->
-                          </tbody>
-                    </table>
-                </div>
+        <footer class="footer border border-dark mt-3">
+            <div class="footer-copyright text-center py-4 ">
+                Made possible with <i class="fas fa-coffee"></i>.js . Brought to you by Marko.
             </div>
-        </div>
+        </footer>
     </div>
-<!--    <footer class="footer fixed-bottom border border-dark mt-3">-->
-<!--        <div class="footer-copyright text-center py-4 ">-->
-<!--            Made possible with <i class="fas fa-coffee"></i>.js . Brought to you by Marko.-->
-<!--        </div>-->
-<!--    </footer>-->
-</div>
 
-<script src="script.js"></script>
+    <script src="script.js"></script>
 
 </body>
+
 </html>

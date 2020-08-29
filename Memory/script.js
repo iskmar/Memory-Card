@@ -5,8 +5,6 @@ let form = document.getElementById('form');
 let time = document.getElementById('timer');
 let btnStartGame = document.getElementById('button');
 let inputCreate = document.createElement('input');
-
-
 let imgArray = [];
 let openedCards = 0;
 let flippedCards = [];
@@ -51,7 +49,6 @@ let resetBoard = () => {
     countMoves = 0;
 }
 
-// startScreenWelcome();
 
 btnStartGame.addEventListener('click', () => {
     if (fetchInputName.value === '' || fetchInputName.value === null) {
@@ -66,15 +63,16 @@ btnStartGame.addEventListener('click', () => {
 
         setTimeout(() => {
             getBoard();
-        },200);
+        }, 200);
+        setTimeout(() => {
+            window.location.href= '#gridDiv';
+        }, 500);
     }
-    // location.reload();
 });
 
 let inputChecked = (array) => {
     for (let i = 0; i < array.length; i++) {
         if (array[i].checked) {
-            // console.log(array[i].id);
             return array[i].id;
         }
     }
@@ -134,7 +132,7 @@ function getBoard() {
         let imgBack = document.createElement('img');
 
         if (count === 16) {
-            fetchGameTable.style.width = '50%';
+            fetchGameTable.style.width = '70%';
             fetchGameTable.style.position = 'relative';
             divCard.style.width = '20%';
             divCard.style.height = '20%';
@@ -271,66 +269,71 @@ function setTableStorage(diff) {
         difficulty: inputChecked(fetchInputRadio),
         moves: countMoves
     }
+    console.log(player.moves);
     // if (localStorage.getItem(`${diff}`) == inputChecked(fetchInputRadio)) {
 
-        if (!localStorage.getItem(`${diff}`)) {
-            playerStorageSet.push(player);
-            localStorage.setItem(`${diff}`, JSON.stringify(playerStorageSet));
-        } else {
-            let getPlayers = JSON.parse(localStorage.getItem(`${diff}`));
-            for (let i = 0; i < getPlayers.length; i++) {
-                playerStorageSet.push(getPlayers[i]);
-            }
-            playerStorageSet.push(player);
-            localStorage.setItem(`${diff}`, JSON.stringify(playerStorageSet));
+    if (!localStorage.getItem(`${diff}`)) {
+        playerStorageSet.push(player);
+        localStorage.setItem(`${diff}`, JSON.stringify(playerStorageSet));
+    } else {
+        let getPlayers = JSON.parse(localStorage.getItem(`${diff}`));
+        for (let i = 0; i < getPlayers.length; i++) {
+            playerStorageSet.push(getPlayers[i]);
         }
+        playerStorageSet.push(player);
+        localStorage.setItem(`${diff}`, JSON.stringify(playerStorageSet));
+    }
     // }
 }
-let btnEasy = document.getElementById('easy');
-let btnMiddle = document.getElementById('middle');
-let btnHard = document.getElementById('hard');
-let btnExpert = document.getElementById('expert');
+
 let btnTable = document.querySelectorAll("button[name='tableButtons']");
 for (let i = 0; i < btnTable.length; i++) {
-    // console.log(btnTable[i]);
     btnTable[i].addEventListener('click', () => {
-        // console.log(inputChecked(fetchInputRadio));
-        // if(btnTable[i].id === inputChecked(fetchInputRadio)) {
-            getLocalStorage(btnTable[i].id);
-            // console.log(inputChecked(fetchInputRadio));
-            // console.log(btnTable[i].id);
-        // }
+        getLocalStorage(btnTable[i].id);
     })
 }
 
 function getLocalStorage(diff) {
-    if(diff == null || diff == '') {
-        return;
-    } else {
-    let tblBody = document.getElementById('tbody');
-    tblBody.innerHTML = '';
-    let countData = 0;
-    let difficultyArray = JSON.parse(localStorage.getItem(`${diff}`));
-    difficultyArray.sort(function(a, b){return a-b});
-    difficultyArray.sort((a, b) => parseFloat(a.time) - parseFloat(b.time));
-    let size = 5;
-    difficultyArray.slice(0,size);
-    console.log(difficultyArray);
-    for (let i = 0; i < difficultyArray.length; i++) {
-        countData++;
+    if (!localStorage.getItem(`${diff}`)) {
+        let tblBody = document.getElementById('tbody');
+        tblBody.innerHTML = '';
         let tblRow = document.createElement("tr");
-        let username = difficultyArray[i].username;
-        let time = difficultyArray[i].time;
-        let td1 = document.createTextNode(`${countData}`);
+        tblRow.style.height = '50px';
+        let tblData1 = document.createElement("td");
+        let tblData2 = document.createElement("td");
+        let tblData3 = document.createElement("td");
+        let tblData4 = document.createElement("td");
+        tblRow.appendChild(tblData1);
+        tblRow.appendChild(tblData2);
+        tblRow.appendChild(tblData3);
+        tblRow.appendChild(tblData4);
+        tblBody.appendChild(tblRow);
+
+    } else {
+        let tblBody = document.getElementById('tbody');
+        tblBody.innerHTML = '';
+        let countData = 0;
+        let difficultyArray = JSON.parse(localStorage.getItem(`${diff}`));
+        difficultyArray.sort(function (a, b) { return a - b });
+        difficultyArray.sort((a, b) => parseFloat(a.time) - parseFloat(b.time));
+        let newArray = difficultyArray.slice(0, 5);
+
+        for (let i = 0; i < newArray.length; i++) {
+            countData++;
+            let tblRow = document.createElement("tr");
+            let username = newArray[i].username;
+            let time = newArray[i].time;
+            let moves = newArray[i].moves;
 
 
             let tblData1 = document.createElement("td");
             let tblData2 = document.createElement("td");
             let tblData3 = document.createElement("td");
             let tblData4 = document.createElement("td");
+            let td1 = document.createTextNode(`${countData}`);
             let td2 = document.createTextNode(`${username}`);
             let td3 = document.createTextNode(`${time}`);
-            let td4 = document.createTextNode(`${countMoves}`);
+            let td4 = document.createTextNode(`${moves}`);
 
             tblData1.appendChild(td1);
             tblData2.appendChild(td2);
@@ -341,11 +344,11 @@ function getLocalStorage(diff) {
             tblRow.appendChild(tblData2);
             tblRow.appendChild(tblData3);
             tblRow.appendChild(tblData4);
-        
-        tblBody.appendChild(tblRow);
 
+            tblBody.appendChild(tblRow);
+
+        }
     }
-}
 }
 getLocalStorage(inputChecked(fetchInputRadio));
 // getLocalStorage();
@@ -366,22 +369,3 @@ let startScreenWelcome = () => {
     p.style.fontSize = '60px';
     fetchGrid.append(p);
 }
-/* <tbody>
-//     <tr>
-//         <th scope="row">1</th>
-//         <td>Mark</td>
-//         <td>Otto</td>
-//         <td>@mdo</td>
-//       </tr>
-//       <tr>
-//         <th scope="row">2</th>
-//         <td>Jacob</td>
-//         <td>Thornton</td>
-//         <td>@fat</td>
-//       </tr>
-//       <tr>
-//         <th scope="row">3</th>
-//         <td colspan="2">Larry the Bird</td>
-//         <td>@twitter</td>
-//       </tr>
-//   </tbody> */
