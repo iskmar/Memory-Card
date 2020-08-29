@@ -11,7 +11,8 @@ let imgArray = [];
 let openedCards = 0;
 let flippedCards = [];
 let flippedCardsId = [];
-let countNum = 0;
+let countTime = 0;
+let countMoves = 0;
 let timer = null;
 let playerStorageSet = [];
 let playerStorageGet = [];
@@ -41,12 +42,13 @@ form.addEventListener('submit', event => {
 
 let resetBoard = () => {
     clearInterval(timer);
-    countNum = 0;
+    countTime = 0;
     time.innerHTML = '0';
     fetchGameTable.innerHTML = '';
     imgArray = [];
     openedCards = 0;
     timer = null;
+    countMoves = 0;
 }
 
 // startScreenWelcome();
@@ -89,11 +91,11 @@ let getLevelValue = (array) => {
 let startGameTimer = () => {
     if (timer === null) {
         timer = setInterval(() => {
-            countNum++;
-            time.innerHTML = countNum;
+            countTime++;
+            time.innerHTML = countTime;
         }, 1000);
     }
-    return countNum;
+    return countTime;
 }
 
 // Push number of images into array depending on which level ** 2
@@ -221,6 +223,8 @@ function checkCards(card) {
 
         } else if (flippedCards.length === 1) {
             // input card value
+            countMoves++;
+            console.log(countMoves);
             flippedCards.push(card.dataset.id);
             flippedCardsId.push(card.id);
             if (flippedCards[0] === flippedCards[1]) {
@@ -230,6 +234,8 @@ function checkCards(card) {
                 flippedCardsId = [];
                 if (openedCards === imgArray.length) {
                     console.log('goodbye');
+                    // countMoves = 0;
+                    console.log(countMoves);
                     clearInterval(timer);
                     setTableStorage(inputChecked(fetchInputRadio));
                     setTimeout(() => {
@@ -264,8 +270,9 @@ function setTableStorage(diff) {
     let currentPlayer = localStorage.getItem('currentUser');
     let player = {
         username: currentPlayer,
-        time: countNum,
-        difficulty: inputChecked(fetchInputRadio)
+        time: countTime,
+        difficulty: inputChecked(fetchInputRadio),
+        moves: countMoves
     }
     // if (localStorage.getItem(`${diff}`) == inputChecked(fetchInputRadio)) {
 
@@ -283,14 +290,53 @@ function setTableStorage(diff) {
         }
     // }
 }
+let btnEasy = document.getElementById('easy');
+let btnMiddle = document.getElementById('middle');
+let btnHard = document.getElementById('hard');
+let btnExpert = document.getElementById('expert');
+let btnTable = document.querySelectorAll("button[name='tableButtons']");
+for (let i = 0; i < btnTable.length; i++) {
+    console.log(btnTable[i]);
+    btnTable[i].addEventListener('click', () => {
+        getLocalStorage(inputChecked(fetchInputRadio));
+        console.log(inputChecked(fetchInputRadio));
+    })
+}
 
 function getLocalStorage(diff) {
+    let tblBody = document.getElementById('tbody');
+    tblBody.innerHTML = '';
+    let countData = 0;
     let difficultyArray = JSON.parse(localStorage.getItem(`${diff}`));
     console.log(difficultyArray);
     for (let i = 0; i < difficultyArray.length; i++) {
-        // console.log(typeof difficultyArray[i]);
-        console.log(difficultyArray[i].username);
+        countData++;
+        console.log(countData);
+        let tblRow = document.createElement("tr");
+        let username = difficultyArray[i].username;
+        let time = difficultyArray[i].time;
+        let difficulty = difficultyArray[i].difficulty;
+        let td1 = document.createTextNode(`${countData}`);
+
+
+            let tblData1 = document.createElement("td");
+            let tblData2 = document.createElement("td");
+            let tblData3 = document.createElement("td");
+            // let tblData4 = document.createElement("td");
+            let td2 = document.createTextNode(`${username}`);
+            let td3 = document.createTextNode(`${time}`);
+            // let td4 = document.createTextNode(`${countData}`);
+
+            tblData1.appendChild(td1);
+            tblData2.appendChild(td2);
+            tblData3.appendChild(td3);
+
+            tblRow.appendChild(tblData1);
+            tblRow.appendChild(tblData2);
+            tblRow.appendChild(tblData3);
         
+        tblBody.appendChild(tblRow);
+
     }
 }
 getLocalStorage(inputChecked(fetchInputRadio));
@@ -311,7 +357,8 @@ let startScreenWelcome = () => {
     p.style.margin = 'auto';
     p.style.fontSize = '60px';
     fetchGrid.append(p);
-{/* <tbody>
+}
+/* <tbody>
 //     <tr>
 //         <th scope="row">1</th>
 //         <td>Mark</td>
@@ -329,4 +376,4 @@ let startScreenWelcome = () => {
 //         <td colspan="2">Larry the Bird</td>
 //         <td>@twitter</td>
 //       </tr>
-//   </tbody> */}
+//   </tbody> */
