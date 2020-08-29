@@ -26,7 +26,10 @@
                 <div class="col-12">
                     <!-- Heading and timer row -->
                     <div class="row no-gutters">
-                        <div class="col-sm-11 text-center">
+                        <div style="float: left;" class="col-sm-1 text-center">
+                            <p id="moves" class="my-auto align-self-center"></p>
+                        </div>
+                        <div class="col-sm-10 text-center">
                             <h5>Igra Memorije</h5>
                         </div>
                         <div class="col-sm-1 text-center">
@@ -37,7 +40,7 @@
                     <!-- Input name -->
                     <div class="row no-gutters">
                         <form action="" class="col-sm-12" id="form">
-                            <input type="text" class="col-12 text-center" id="inputName">
+                            <input type="text" class="col-12 text-center" id="inputName" placeholder="Unesite ime">
                         </form>
                     </div>
                     <!-- Difficulty radio buttons -->
@@ -59,20 +62,18 @@
                     <!-- Start new game button -->
                     <div class="row no-gutters">
                         <div class="col-sm-12 text-center">
-                            <!-- <button class="btn btn-light btn-outline-dark align-self-center" id="button">Start New Game</button> -->
-                            <a href="#welcome" class="btn btn-light btn-outline-dark align-self-center"
-                                id="button">Start New Game</a>
+                            <button class="btn btn-light btn-outline-dark align-self-center" id="button">Start New Game</button>
+                            <!-- <a class="btn btn-light btn-outline-dark align-self-center"
+                                id="button">Start New Game</a> -->
                         </div>
                     </div>
                 </div>
                 <!-- GAME BOARD STARTS-->
                 <div class="col-12 border-info align-items-center text-center" id="gameTable">
-                    <p>Hello</p>
                     <div id="gridDiv">
                         <div id="welcome">
-
+                            <p id="welcomeP"></p>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -83,13 +84,13 @@
                         <h5>Najbolji rezultati</h5>
                     </div>
                     <div class="row no-gutters justify-content-around">
-                        <button class="btn btn-light btn-outline-dark col-6 col-sm-6 col-md-3" name="tableButtons"
+                        <button class="btn btn-light col-6 col-sm-6 col-md-3" name="tableButtons"
                             id="easy">Lako</button>
-                        <button class="btn btn-light btn-outline-dark col-6 col-sm-6 col-md-3" name="tableButtons"
+                        <button class="btn btn-light col-6 col-sm-6 col-md-3" name="tableButtons"
                             id="middle">Srednje</button>
-                        <button class="btn btn-light btn-outline-dark col-6 col-sm-6 col-md-3" name="tableButtons"
+                        <button class="btn btn-light col-6 col-sm-6 col-md-3" name="tableButtons"
                             id="hard">Tesko</button>
-                        <button class="btn btn-light btn-outline-dark col-6 col-sm-6 col-md-3" name="tableButtons"
+                        <button class="btn btn-light col-6 col-sm-6 col-md-3" name="tableButtons"
                             id="expert">Ekspert</button>
                     </div>
                     <div class="row no-gutters">
