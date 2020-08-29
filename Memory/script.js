@@ -201,10 +201,7 @@ function saveNameStorage(name) {
         let currentName = inputName;
         localStorage.setItem('currentUser', inputName);
         return localStorage.getItem('currentUser');
-
     }
-
-
 }
 
 // Create input name and store it in local storage
@@ -282,7 +279,6 @@ function setTableStorage(diff) {
         } else {
             let getPlayers = JSON.parse(localStorage.getItem(`${diff}`));
             for (let i = 0; i < getPlayers.length; i++) {
-                // console.log(playerStorageSet);
                 playerStorageSet.push(getPlayers[i]);
             }
             playerStorageSet.push(player);
@@ -296,48 +292,60 @@ let btnHard = document.getElementById('hard');
 let btnExpert = document.getElementById('expert');
 let btnTable = document.querySelectorAll("button[name='tableButtons']");
 for (let i = 0; i < btnTable.length; i++) {
-    console.log(btnTable[i]);
+    // console.log(btnTable[i]);
     btnTable[i].addEventListener('click', () => {
-        getLocalStorage(inputChecked(fetchInputRadio));
-        console.log(inputChecked(fetchInputRadio));
+        // console.log(inputChecked(fetchInputRadio));
+        // if(btnTable[i].id === inputChecked(fetchInputRadio)) {
+            getLocalStorage(btnTable[i].id);
+            // console.log(inputChecked(fetchInputRadio));
+            // console.log(btnTable[i].id);
+        // }
     })
 }
 
 function getLocalStorage(diff) {
+    if(diff == null || diff == '') {
+        return;
+    } else {
     let tblBody = document.getElementById('tbody');
     tblBody.innerHTML = '';
     let countData = 0;
     let difficultyArray = JSON.parse(localStorage.getItem(`${diff}`));
+    difficultyArray.sort(function(a, b){return a-b});
+    difficultyArray.sort((a, b) => parseFloat(a.time) - parseFloat(b.time));
+    let size = 5;
+    difficultyArray.slice(0,size);
     console.log(difficultyArray);
     for (let i = 0; i < difficultyArray.length; i++) {
         countData++;
-        console.log(countData);
         let tblRow = document.createElement("tr");
         let username = difficultyArray[i].username;
         let time = difficultyArray[i].time;
-        let difficulty = difficultyArray[i].difficulty;
         let td1 = document.createTextNode(`${countData}`);
 
 
             let tblData1 = document.createElement("td");
             let tblData2 = document.createElement("td");
             let tblData3 = document.createElement("td");
-            // let tblData4 = document.createElement("td");
+            let tblData4 = document.createElement("td");
             let td2 = document.createTextNode(`${username}`);
             let td3 = document.createTextNode(`${time}`);
-            // let td4 = document.createTextNode(`${countData}`);
+            let td4 = document.createTextNode(`${countMoves}`);
 
             tblData1.appendChild(td1);
             tblData2.appendChild(td2);
             tblData3.appendChild(td3);
+            tblData4.appendChild(td4);
 
             tblRow.appendChild(tblData1);
             tblRow.appendChild(tblData2);
             tblRow.appendChild(tblData3);
+            tblRow.appendChild(tblData4);
         
         tblBody.appendChild(tblRow);
 
     }
+}
 }
 getLocalStorage(inputChecked(fetchInputRadio));
 // getLocalStorage();
