@@ -72,6 +72,7 @@ btnStartGame.addEventListener('click', () => {
 let inputChecked = (array) => {
     for (let i = 0; i < array.length; i++) {
         if (array[i].checked) {
+            // console.log(array[i].id);
             return array[i].id;
         }
     }
@@ -230,7 +231,7 @@ function checkCards(card) {
                 if (openedCards === imgArray.length) {
                     console.log('goodbye');
                     clearInterval(timer);
-                    // setTableStorage();
+                    setTableStorage(inputChecked(fetchInputRadio));
                     setTimeout(() => {
                         let answer = confirm("Da li zelite novu igru?");
                         if (answer) {
@@ -259,40 +260,40 @@ function checkCards(card) {
     }
 }
 
-// function setTableStorage(diff) {
-//     let currentPlayer = localStorage.getItem('currentUser');
-//     let player = {
-//         username: currentPlayer,
-//         time: countNum,
-//         difficulty: inputChecked(fetchInputRadio)
-//     }
-//     if (!localStorage.getItem(`diff${diff}`)) {
-//         playerStorageSet.push(player);
-//         localStorage.setItem(`diff${diff}`, JSON.stringify(playerStorageSet));
-//     } else {
-//         let getPlayers = JSON.parse(localStorage.getItem(`diff${diff}`));
-//         for (let i = 0; i < getPlayers.length; i++) {
-//             console.log(playerStorageSet);
-//             playerStorageSet.push(getPlayers[i]);
-//         }
-//         playerStorageSet.push(player);
-//         localStorage.setItem('allPlayers', JSON.stringify(playerStorageSet));
-//     }
-// }
-
-function getLocalStorage() {
-    if (!localStorage.getItem('allPlayers')) {
-        // alert('Array empty');
+function setTableStorage(diff) {
+    let currentPlayer = localStorage.getItem('currentUser');
+    let player = {
+        username: currentPlayer,
+        time: countNum,
+        difficulty: inputChecked(fetchInputRadio)
     }
-    // let getPlayers = JSON.parse(localStorage.getItem('allPlayers')) || [];
-    // playerStorageGet.push(getPlayers);
-    // for (let i = 0; i < getPlayers.length; i++) {
-    //     console.log(getPlayers[i]);
+    // if (localStorage.getItem(`${diff}`) == inputChecked(fetchInputRadio)) {
 
+        if (!localStorage.getItem(`${diff}`)) {
+            playerStorageSet.push(player);
+            localStorage.setItem(`${diff}`, JSON.stringify(playerStorageSet));
+        } else {
+            let getPlayers = JSON.parse(localStorage.getItem(`${diff}`));
+            for (let i = 0; i < getPlayers.length; i++) {
+                // console.log(playerStorageSet);
+                playerStorageSet.push(getPlayers[i]);
+            }
+            playerStorageSet.push(player);
+            localStorage.setItem(`${diff}`, JSON.stringify(playerStorageSet));
+        }
     // }
-
 }
 
+function getLocalStorage(diff) {
+    let difficultyArray = JSON.parse(localStorage.getItem(`${diff}`));
+    console.log(difficultyArray);
+    for (let i = 0; i < difficultyArray.length; i++) {
+        // console.log(typeof difficultyArray[i]);
+        console.log(difficultyArray[i].username);
+        
+    }
+}
+getLocalStorage(inputChecked(fetchInputRadio));
 // getLocalStorage();
 let startScreenWelcome = () => {
     let fetchGrid = document.getElementById('welcome');
@@ -310,4 +311,22 @@ let startScreenWelcome = () => {
     p.style.margin = 'auto';
     p.style.fontSize = '60px';
     fetchGrid.append(p);
-}
+{/* <tbody>
+//     <tr>
+//         <th scope="row">1</th>
+//         <td>Mark</td>
+//         <td>Otto</td>
+//         <td>@mdo</td>
+//       </tr>
+//       <tr>
+//         <th scope="row">2</th>
+//         <td>Jacob</td>
+//         <td>Thornton</td>
+//         <td>@fat</td>
+//       </tr>
+//       <tr>
+//         <th scope="row">3</th>
+//         <td colspan="2">Larry the Bird</td>
+//         <td>@twitter</td>
+//       </tr>
+//   </tbody> */}
