@@ -1,193 +1,504 @@
-// let divCreateResult = document.querySelector('result');
-let fetchInputRadioName = document.querySelectorAll("input[type='radio']");
-// let fetchInputName = document.getElementById('inputName');
+// 1. Doms and variables define
+// 2. All the functions
+// 3. Event Listeners and function calls
+
+
+//////////////////////////////////////////////////////    DOMS / VARIABLES   //////////////////////////////////////////////////////
+
+let fetchInputRadio = document.querySelectorAll("input[type='radio']");
+let fetchInputName = document.getElementById('inputName');
+fetchInputName.style.margin = 'auto';
+fetchInputName.style.width = '60%';
+fetchInputName.style.color = 'darkgreen';
+fetchInputName.classList.add('text-center');
+fetchInputName.style.width = '50%';
+fetchInputName.style.borderRadius = '20px';
+fetchInputName.style.height = '40px';
+fetchInputName.style.fontSize = '30px';
+
+
+let fetchGameTable = document.getElementById('gridDiv');
 let form = document.getElementById('form');
-let fetchGameTable = document.getElementById('gameTable');
+let time = document.getElementById('timer');
 
-
-let getLevelValue = (array) => {
-    for (let i = 0; i < array.length; i++) {
-        if(array[i].checked){
-            return Number(array[i].value);
-        }
-    }
-};
-let count = getLevelValue(fetchInputRadioName) ** 2;
-console.log(count);
+let moves = document.getElementById('moves');
+let btnStartGame = document.getElementById('button');
+let inputCreate = document.createElement('input');
+let btnTable = document.querySelectorAll("button[name='tableButtons']");
 let imgArray = [];
+let openedCards = 0;
+let flippedCards = [];
+let flippedCardsId = [];
+let countTime = 0;
+let countMoves = 0;
+let timer = null;
+let playerStorageSet = [];
 
-// Push number of images into array depending on which level ** 2
-for(let i = 1; i <= count / 2;i++) {
-    for (let j = 1; j <= 2; j++) {
-        imgArray.push(i);
+//////////////////////////////////////////////////////    DOMS / VARIABLES   //////////////////////////////////////////////////////
+
+
+
+
+//////////////////////////////////////////////////////    FUNCTIONS   //////////////////////////////////////////////////////
+// let upp = (par) => {
+//     par.value = par.value.toUpperCase();
+//     // console.log(par.value);
+//     return par.value;
+// }
+
+// function called inside of form listener
+// contains css style of previous input field
+let inputReplace = () => {
+    inputCreate.setAttribute('type', 'text');
+    inputCreate.setAttribute('id', 'inputName');
+    inputCreate.style.color = 'darkgreen';
+    inputCreate.classList.add('text-center');
+    inputCreate.style.width = '50%';
+    inputCreate.style.borderRadius = '20px';
+    inputCreate.style.height = '40px';
+    inputCreate.style.fontSize = '30px';
+    return inputCreate;
+}
+let startScreenWelcome = () => {
+    let fetchGrid = document.getElementById('welcome');
+    let fetchP = document.getElementById('welcomeP');
+    let name = localStorage.getItem('currentUser');
+    fetchGrid.innerHTML = '';
+    fetchP.style.zIndex = 9999;
+    fetchP.classList.add('text-info')
+    fetchP.innerHTML = `WELCOME <br>`;
+    fetchP.innerHTML += `<span style="color: orangered; filter: opacity(100%);">${name.toUpperCase()}</span>`;
+    fetchP.style.margin = 'auto';
+    fetchP.style.fontSize = '60px';
+    fetchGrid.appendChild(fetchP);
+}
+
+// get existing localstorage array
+// function checks for 
+let getLocalStorage = (diff) => {
+    // if localstorage is empty, print out borders only for visual
+    if (!localStorage.getItem(`${diff}`)) {
+        let tblBody = document.getElementById('tbody');
+        tblBody.innerHTML = '';
+        let tblRow = document.createElement("tr");
+        tblRow.style.height = '50px';
+        let tblData1 = document.createElement("td");
+        let tblData2 = document.createElement("td");
+        let tblData3 = document.createElement("td");
+        let tblData4 = document.createElement("td");
+
+        tblRow.appendChild(tblData1);
+        tblRow.appendChild(tblData2);
+        tblRow.appendChild(tblData3);
+        tblRow.appendChild(tblData4);
+
+        tblBody.appendChild(tblRow);
+    } else {
+        // else print out table
+        let tblBody = document.getElementById('tbody');
+        tblBody.innerHTML = '';
+        let countRows = 0;
+        let difficultyArray = JSON.parse(localStorage.getItem(`${diff}`));
+        difficultyArray.sort((a, b) => parseFloat(a.time) - parseFloat(b.time));
+        let newArray = difficultyArray.slice(0, 5);
+
+        for (let i = 0; i < newArray.length; i++) {
+            countRows++;
+            let tblRow = document.createElement("tr");;
+            let username = newArray[i].username;
+            let time = newArray[i].time;
+            let movesCount = newArray[i].moves;
+            
+            let tblData1 = document.createElement("td");
+            let tblData2 = document.createElement("td");
+            let tblData3 = document.createElement("td");
+            let tblData4 = document.createElement("td");
+            let td1 = document.createTextNode(`${countRows}`);
+            let td2 = document.createTextNode(`${username.toUpperCase()}`);
+            let td3 = document.createTextNode(`${secToMin(time)}`);
+            let td4 = document.createTextNode(`${movesCount}`);
+
+            tblData1.appendChild(td1);
+            tblData2.appendChild(td2);
+            tblData3.appendChild(td3);
+            tblData4.appendChild(td4);
+
+            tblRow.appendChild(tblData1);
+            tblRow.appendChild(tblData2);
+            tblRow.appendChild(tblData3);
+            tblRow.appendChild(tblData4);
+
+            tblBody.appendChild(tblRow);
+        }
     }
 }
 
-// Randomize array
-function shuffleArray(array) {
+// Depending on level, set new array to localstorage with a key corresponding to the id of difficulty button
+// function called only when game is finished
+let setTableStorage = (diff) => {
+    // store current user sepparately
+    let currentPlayer = localStorage.getItem('currentUser');
+    // prepare object to insert into localstorage
+    let player = {
+        username: currentPlayer,
+        time: countTime,
+        difficulty: diff,
+        moves: countMoves
+    }
+    // if localstorage doesnt exist, create new one
+    if (!localStorage.getItem(`${diff}`)) {
+        playerStorageSet.push(player);
+        localStorage.setItem(`${diff}`, JSON.stringify(playerStorageSet));
+    } else {
+        let getPlayers = JSON.parse(localStorage.getItem(`${diff}`));
+        for (let i = 0; i < getPlayers.length; i++) {
+            playerStorageSet.push(getPlayers[i]);
+        }
+        playerStorageSet.push(player);
+        localStorage.setItem(`${diff}`, JSON.stringify(playerStorageSet));
+    }
+}
+// check cards for matching
+// forbid more than two cards opened at all times
+// function does all the work 
+// removes css,checks validity, restores previous settings
+let checkCards = (card) => {
+    // check if only two cards are opened at a time
+    if (flippedCards.length < 2) {
+        // flip the card if flippedCards array is explicitly less then 2
+        card.classList.toggle('flipped');
+        // push first card into array
+        if (flippedCards.length === 0) {
+            // input card
+            flippedCards.push(card.dataset.id);
+            flippedCardsId.push(card.id);
+            // push second card and check if match
+        } else if (flippedCards.length === 1) {
+            countMoves++;
+            // print out how many moves
+            startGameMoves();
+            flippedCards.push(card.dataset.id);
+            flippedCardsId.push(card.id);
+            // check if cards match
+            if (flippedCards[0] === flippedCards[1]) {
+                // push 2 cards for evaluation if game is finished
+                openedCards += 2;
+                // empty array for storing flipped cards
+                flippedCards = [];
+                flippedCardsId = [];
+                // check if total number of opened cards match the array for storing cards 
+                if (openedCards === imgArray.length) {
+                    // console.log('goodbye');
+                    // after game is finished
+                    // clear interval
+                    clearInterval(timer);
+                    // push player info to local storage
+                    setTableStorage(inputChecked(fetchInputRadio));
+                    // delay 500 ms and reload if confirmed
+                    // else leave the game in state when finished
+                    setTimeout(() => {
+                        let answer = confirm("Da li zelite novu igru?");
+                        if (answer) {
+                            location.reload();
+                            // resetBoard();
+                            // setTimeout(() => {
+                            //     getBoard();
+                            // }, 200);
+                        }
+                    }, 500);
+
+                }
+            } else {
+                // if flipped cards do not match
+                // close them and reset styles
+                function closeCard() {
+                    let card1 = document.getElementById(`${flippedCardsId[0]}`);
+                    let card2 = document.getElementById(`${flippedCardsId[1]}`);
+                    if (card1.classList.contains('flipped')) {
+                        card1.classList.toggle('flipped');
+                    }
+                    if (card2.classList.contains('flipped')) {
+                        card2.classList.toggle('flipped');
+                    }
+                    // empty array for storing flipped cards
+                    flippedCards = [];
+                    flippedCardsId = [];
+                }
+
+                setTimeout(closeCard, 700);
+            }
+        }
+    }
+}
+
+// check if name is input
+// if() push name to local storage
+let saveNameStorage = (name) => {
+    let inputName = name.value;
+    if (!inputName || inputName === "") {
+        alert("Molimo vas unesite sve podatke");
+    } else {
+        localStorage.setItem('currentUser', inputName);
+        return localStorage.getItem('currentUser').toUpperCase();
+    }
+}
+// print out the board
+let getBoard = () => {
+    // check to see which level 
+    // getlevelvalue returns number as value
+    getLevelValue(fetchInputRadio);
+    // square returned level value
+    let count = getLevelValue(fetchInputRadio) ** 2;
+    // push as many images as the value of count
+    pushImgArray(count);
+    // shuffle content in array
+    shuffleArray(imgArray);
+    // set basic css for background
+    fetchGameTable.style.backgroundImage = "url('images/background.png')"; 
+    fetchGameTable.style.border = '2px solid darkcyan';
+    fetchGameTable.style.padding = '5px';
+    fetchGameTable.style.margin = '0px auto';
+    fetchGameTable.style.borderRadius = '30px';
+
+    // loop trough array
+    for (let i = 0; i < imgArray.length; i++) {
+        // set cards' DOM
+        let divCard = document.createElement('div');
+        let imgFront = document.createElement('img');
+        let imgBack = document.createElement('img');
+        // set board size depending on count variable(difficulty level)
+        if (count === 16) {
+            fetchGameTable.style.width = '60%';
+            fetchGameTable.style.position = 'relative';
+            divCard.style.width = '20%';
+            divCard.style.height = '20%';
+        } else if (count === 36) {
+            fetchGameTable.style.width = '60%';
+            fetchGameTable.style.position = 'relative';
+            divCard.style.width = '14%';
+        } else if (count === 64) {
+            fetchGameTable.style.width = '70%';
+            fetchGameTable.style.position = 'relative';
+            divCard.style.width = '11%';
+        } else {
+            fetchGameTable.style.width = '70%';
+            fetchGameTable.style.position = 'relative';
+            divCard.style.width = '8.5%';
+        }
+        // set cards css
+        divCard.style.display = 'inline-block';
+        divCard.style.position = 'relative';
+        divCard.style.border = '3px solid darkcyan';
+        divCard.style.borderRadius = '15px';
+        divCard.style.margin = '5px';
+        divCard.style.cursor = 'pointer';
+        divCard.style.textAlign = 'center';
+
+        imgFront.style.width = '100%';
+        imgFront.style.height = '100%';
+        imgFront.setAttribute('src', `images/${imgArray[i]}.png`);
+
+        imgBack.style.width = '100%';
+        imgBack.style.height = '100%';
+        imgBack.style.position = 'absolute';
+        imgBack.style.top = '0px';
+        imgBack.style.left = '0px';
+        imgBack.setAttribute('id', i);
+        imgBack.setAttribute('data-id', `data_${imgArray[i]}`);
+        imgBack.setAttribute('src', 'images/title.png');
+
+        // append cards to the game table
+        divCard.appendChild(imgFront);
+        divCard.appendChild(imgBack);
+        fetchGameTable.appendChild(divCard);
+
+        // add event listener to each card
+        // first click is only click
+        // adds game timer
+        // sets current name to localstorage
+        divCard.addEventListener('click', () => {
+            startGameTimer();
+            localStorage.setItem('currentUser', inputCreate.value);
+        });
+        // event lister on foreground image
+        // calls function that checks the cards
+        imgBack.addEventListener('click', function () {
+            checkCards(this);
+        });
+    }
+}
+// simple func to print game moves
+let startGameMoves = () => {
+    moves.innerHTML = `Moves: `;
+    moves.style.color = 'cyan';
+    moves.innerHTML += countMoves;
+}
+
+// Push number of images into array depending on which level ** 2
+let pushImgArray = (count) => {
+    for (let i = 1; i <= count / 2; i++) {
+        for (let j = 1; j <= 2; j++) {
+            imgArray.push(i);
+        }
+    }
+}
+
+/* Randomize array in-place using Durstenfeld shuffle algorithm */
+let shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
 }
-shuffleArray(imgArray);
-console.log(shuffleArray(imgArray));
-
-
-// let imagesData = document.querySelectorAll('img#id');
-// console.log(imagesHTML);
-// for (let i = 0; i < imagesHTML.length; i++) {
-//     console.log(imagesHTML[i]);
-// }
-// function matched(id) {
-//     if(){
-//         matchedCards.push()
-//     }
-// }
-
-// let divContainer = document.createElement('div');
-// divContainer.style.position = 'relative';
-let tableCreate = document.createElement('table');
-for (let i = 0; i <= imgArray.length - 1; i += getLevelValue(fetchInputRadioName)) {
-    let createTableRow = document.createElement('tr');
-    if (getLevelValue(fetchInputRadioName) === 4) {
-        for (let j = i; j < i + 4; j++) {
-            createTableData = document.createElement('td');
-            divCreate = document.createElement('div');
-            divCreate.style.position = 'relative';
-            divCreate.style.display = 'inline-block';
-            createImg = document.createElement('img');
-            createImgClose = document.createElement('img');
-            createImg.setAttribute('width', '100px');
-            createImg.setAttribute('height', '100px');
-            createImg.setAttribute('class','front');
-            createImg.setAttribute('src', `images/${imgArray[j]}.png`);
-            // createImg.style.cssFloat = 'left';
-            // createImg.style.position = 'absolute';
-            createImg.style.zIndex = '1';
-            createImgClose.setAttribute('width', '100px');
-            createImgClose.setAttribute('height', '100px');
-            createImgClose.setAttribute('data-id', `${imgArray[j]}`);
-            createImgClose.setAttribute('class', 'back');
-            createImgClose.setAttribute('src','images/closedCard.png');
-            // createImgClose.style.cssFloat = 'left';
-            // createImgClose.style.position = 'absolute';
-            createImgClose.style.zIndex = '0';
-            // divCreate.appendChild(createImgClose);
-            // divCreate.appendChild(createImg);
-
-            divCreate.appendChild(createImgClose);
-            divCreate.appendChild(createImg);
-            createTableData.appendChild(divCreate);
-            createTableRow.appendChild(createTableData);
-
+// rather than reloading page
+// reset all the settings to how they were when game started
+let resetBoard = () => {
+    clearInterval(timer);
+    countTime = 0;
+    time.style.color = 'cyan';
+    time.style.fontSize = '20px';
+    time.innerHTML = 'Time: ';
+    moves.style.color = 'cyan';
+    moves.style.fontSize = '20px';
+    moves.innerHTML = 'Moves: '
+    fetchGameTable.innerHTML = '';
+    imgArray = [];
+    openedCards = 0;
+    timer = null;
+    countMoves = 0;
+}
+// transform seconds to minutes for score table
+let secToMin = (par) => {
+    let mins = Math.floor(par / 60);
+    let sec = par % 60;
+    if (mins === 0) {
+        return `${sec} sec`;
+    } else {
+        return `${mins} min : ${sec} sec`;
+    }
+}
+// checks which radio button is checked
+// returns id of the button
+// id corrseponds to the difficulty level
+// called only when storing player info to localstorage
+let inputChecked = (array) => {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i].checked) {
+            return array[i].id;
         }
     }
-    // else if (getLevelValue(fetchInputRadioName) === 6) {
-    //     for (let j = i; j < i + 6; j++) {
-    //         let createTableData = document.createElement('td');
-    //         let createImg = document.createElement('img');
-    //         let createImgClose = document.createElement('img');
-    //         createImg.setAttribute('width', '100px');
-    //         createImg.setAttribute('height', '100px');
-    //         createImg.setAttribute('class','front');
-    //         createImg.setAttribute('src', `images/${imgArray[j]}.png`);
-    //         createImgClose.setAttribute('width', '100px');
-    //         createImgClose.setAttribute('height', '100px');
-    //         createImgClose.setAttribute('class', 'back');
-    //         createImgClose.setAttribute('src','images/closedCard.png');
-    //         createImgClose.style.zIndex = '1';
-    //         createTableData.appendChild(createImgClose);
-    //         createTableData.appendChild(createImg);
-    //         createTableRow.appendChild(createTableData);
-    //     }
-    // } else if (getLevelValue(fetchInputRadioName) === 8) {
-    //     for (let j = i; j < i + 8; j++) {
-    //         let createTableData = document.createElement('td');
-    //         let createImg = document.createElement('img');
-    //         let createImgClose = document.createElement('img');
-    //         createImg.setAttribute('width', '90px');
-    //         createImg.setAttribute('height', '90px');
-    //         createImg.setAttribute('class','front');
-    //         createImg.setAttribute('src', `images/${imgArray[j]}.png`);
-    //         createImgClose.setAttribute('width', '90px');
-    //         createImgClose.setAttribute('height', '90px');
-    //         createImgClose.setAttribute('class', 'back');
-    //         createImgClose.setAttribute('src','images/closedCard.png');
-    //         createTableData.appendChild(createImgClose);
-    //         createTableData.appendChild(createImg);
-    //         createTableRow.appendChild(createTableData);
-    //     }
-    // } else {
-    //     for (let j = i; j < i + 10; j++) {
-    //         let createTableData = document.createElement('td');
-    //         let createImg = document.createElement('img');
-    //         let createImgClose = document.createElement('img');
-    //         createImg.setAttribute('width', '80px');
-    //         createImg.setAttribute('height', '80px');
-    //         createImg.setAttribute('class','front');
-    //         createImg.setAttribute('src', `images/${imgArray[j]}.png`);
-    //         createImgClose.setAttribute('width', '80px');
-    //         createImgClose.setAttribute('height', '80px');
-    //         createImgClose.setAttribute('class', 'back');
-    //         createImgClose.setAttribute('src','images/closedCard.png');
-    //         createTableData.appendChild(createImgClose);
-    //         createTableData.appendChild(createImg);
-    //         createTableRow.appendChild(createTableData);
-    //     }
-    // }
-
-    // divContainer.appendChild(divCreate);
-    tableCreate.append(createTableRow);
 }
-fetchGameTable.appendChild(tableCreate);
+// returns number value of radio button checked
+let getLevelValue = (array) => {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i].checked) {
+            return Number(array[i].value);
+        }
+    }
+};
+// start the game timer
+// called on first click of the game
+// print out results
+let startGameTimer = () => {
+    if (timer === null) {
+        timer = setInterval(() => {
+            countTime++;
+            time.style.color = 'cyan';
+            time.style.borderRadius = '20px';
+            time.innerHTML = 'Time: ';
+            time.innerHTML += countTime;
+        }, 1000);
+    }
+    return countTime;
+}
+//////////////////////////////////////////////////////    FUNCTIONS   //////////////////////////////////////////////////////
 
 
-let inputCreate = document.createElement('input');
-inputCreate.setAttribute('type','text');
-inputCreate.setAttribute('id','inputName');
-form.appendChild(inputCreate);
 
+
+//////////////////////////////////////////////////////    FUNCTION CALLS  //////////////////////////////////////////////////////
+
+// table always printed
+getLocalStorage(inputChecked(fetchInputRadio));
+
+// score buttons css
+// applies css only if clicked
+// when other button is clicked,previous loses classs and therefore css
+for (let i = 0; i < btnTable.length; i++) {
+    btnTable[i].addEventListener('click', () => {
+        getLocalStorage(btnTable[i].id);
+        btnTable[i].classList.toggle('clicked');
+        btnTable[i].classList.add('btn-outline-dark');
+        if(btnTable[i].classList.contains('clicked')) {
+            btnTable[i].classList.remove('btn-outline-dark');
+            btnTable[i].classList.toggle('clicked');
+        } 
+    })
+}
+// window.onload = getBoard();
+//////////////////////////////////////////////////////    FUNCTION CALLS  //////////////////////////////////////////////////////
+
+
+
+
+//////////////////////////////////////////////////////    EVENT LISTENERS   //////////////////////////////////////////////////////
+
+
+
+// event listener on enter
+// replace original input field with new one
+// created by fetching name from localStorage
 form.addEventListener('submit', event => {
     event.preventDefault();
-    let fetchInputName = document.getElementById('inputName');
-    let createNode = document.createTextNode(`${saveNameStorage(inputCreate)}`);
-    fetchInputName.value = createNode.data;
-    console.log(fetchInputName.value);
-    form.removeChild(inputCreate);
-    form.appendChild(fetchInputName);
+    // on enter, save name to local storage
+    saveNameStorage(fetchInputName);
+    // checks if input field is empty
+    // if empty, do nothing and throw alert from previusly called function that stores names
+    if (fetchInputName.value === '' || fetchInputName.value === null) {
+    } else {
+        let fetchInputName = document.getElementById('inputName');
+        inputReplace();
+        // fetch value of input and print it out in a new input field
+        let createNode = document.createTextNode(`${saveNameStorage(fetchInputName)}`);
+        inputCreate.value = createNode.data;
+        form.removeChild(fetchInputName);
+        form.appendChild(inputCreate);
+        // when submit, prints out welcome screen
+        startScreenWelcome();
+    }
+
 });
 
-function saveNameStorage(name) {
-    let inputName = name.value;
-    if(!inputName || inputName === "" ) {
+// start new game
+btnStartGame.addEventListener('click', () => {
+    // dont start game if input field is empty
+    if (fetchInputName.value === '' || fetchInputName.value === null) {
         alert("Molimo vas unesite sve podatke");
+    } else {
+        // if game already finished
+        // reset the board
+        resetBoard();
+        // delay 500 ms after button click
+        setTimeout(() => {
+            getBoard();
+        });
+        // move window to give focus on game table
+        // usefull for bigger tables
+        // wait when clicked 
+        setTimeout(() => {
+            window.location.href = '#gridDiv';
+        },500);
     }
-    else {
-        localStorage.setItem('name', inputName);
-        return localStorage.getItem('name');
-        }
-}
+});
+
+//////////////////////////////////////////////////////    EVENT LISTENERS   //////////////////////////////////////////////////////
 
 
-let imagesHTML = document.querySelectorAll('img');
-// function flipCard() {
-//     this.classList.toggle('flip');
-//     console.log('i flipped it');
-// }
-
-    matchedCards = [];
-    for (let i = 0; i < imagesHTML.length ; i++) {
-        imagesHTML[i].addEventListener('click',event => {
-            event.preventDefault();
-            createImgClose.style.zIndex = '0';
-            createImg.style.zIndex = '1';
-            // flipCard();
-            // imagesHTML[i].parentNode.removeChild(imagesHTML[i]);
-            // imagesHTML[i].parentNode.replaceChild(createImg, imagesHTML[i]);
-            // matchedCards.push(imagesHTML[i].dataset.id);
-        // console.log(imagesHTML[i].dataset.id);
-        console.log(matchedCards);
-        })
-    }
+// Known bugs
+// 1. Fix infinite array.length inside of localstorage
+// 2. Fix input replacing
+// 3. Fix fetchGrid error on name change when game starts
+//      - if name changes - reset board
+// 4. Add reset button to the table to reset table
+// 5. Fix icons size on hard and expert level
