@@ -254,7 +254,7 @@ let getBoard = () => {
     // shuffle content in array
     shuffleArray(imgArray);
     // set basic css for background
-    fetchGameTable.style.backgroundImage = "url('images/background.png')"; 
+    // fetchGameTable.style.backgroundImage = "url('/images/background.png')"; 
     fetchGameTable.style.border = '2px solid darkcyan';
     fetchGameTable.style.padding = '5px';
     fetchGameTable.style.margin = '0px auto';
