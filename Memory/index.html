@@ -18,7 +18,7 @@
 <body>
     <div class="container-fluid">
         <div class="row align-items-center">
-            <h1 class="col-sm-12 text-center">Memory Game</h1>
+            <h1 class="col-sm-12 text-light text-center">Memory Game</h1>
         </div>
         <div class="row no-gutters">
             <div class="col-lg-8">
@@ -26,26 +26,26 @@
                 <div class="col-12">
                     <!-- Heading and timer row -->
                     <div class="row no-gutters">
-                        <div style="float: left;" class="col-sm-1 text-center">
+                        <div style="margin-left: auto;" class="col-1 text-center">
                             <p id="moves" class="my-auto align-self-center"></p>
                         </div>
-                        <div class="col-sm-10 text-center">
+                        <div class="col-sm-10 text-light text-center">
                             <h5>Igra Memorije</h5>
                         </div>
-                        <div class="col-sm-1 text-center">
+                        <div style="margin-right: auto;" class="col-1 text-center">
                             <p id="timer" class="my-auto align-self-center"></p>
                         </div>
                     </div>
                     <!-- Input, radio buttons and button in the same row -->
                     <!-- Input name -->
                     <div class="row no-gutters">
-                        <form action="" class="col-sm-12" id="form">
-                            <input type="text" class="col-12 text-center" id="inputName" placeholder="Unesite ime">
+                        <form action="" class="col-sm-12 d-flex justify-content-center" id="form">
+                                <input style="width: 100%;" type="text" class="text-center" id="inputName" placeholder="Unesite ime">
                         </form>
                     </div>
                     <!-- Difficulty radio buttons -->
                     <div
-                        class="row no-gutters justify-content-sm-around justify-content-md-center justify-content-xl-center">
+                        class="row no-gutters text-light justify-content-sm-around justify-content-md-center justify-content-xl-center">
                         <label class="col col-sm-auto col-md-auto text-center">
                             <input type="radio" value="4" name="difficulty" id="easy" checked="checked">Lako
                         </label>
@@ -63,8 +63,8 @@
                     <div class="row no-gutters">
                         <div class="col-sm-12 text-center">
                             <button class="btn btn-light btn-outline-dark align-self-center" id="button">Start New Game</button>
-                            <!-- <a class="btn btn-light btn-outline-dark align-self-center"
-                                id="button">Start New Game</a> -->
+                            <!-- <a  class="btn btn-light btn-outline-dark align-self-center" -->
+                                <!-- id="button">Start New Game</a> -->
                         </div>
                     </div>
                 </div>
@@ -80,10 +80,10 @@
             <!-- BEST RESULTS -->
             <div class="col-lg-4">
                 <div class="col-12">
-                    <div class="col-12 text-center">
+                    <div class="col-12 text-light text-center">
                         <h5>Najbolji rezultati</h5>
                     </div>
-                    <div class="row no-gutters justify-content-around">
+                    <div class="row no-gutters">
                         <button class="btn btn-light col-6 col-sm-6 col-md-3" name="tableButtons"
                             id="easy">Lako</button>
                         <button class="btn btn-light col-6 col-sm-6 col-md-3" name="tableButtons"
@@ -94,7 +94,7 @@
                             id="expert">Ekspert</button>
                     </div>
                     <div class="row no-gutters">
-                        <table id="table" class="table table-hover table-bordered">
+                        <table id="table" class="table text-light table-bordered">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
@@ -111,8 +111,8 @@
                 </div>
             </div>
         </div>
-        <footer class="footer border border-dark mt-3">
-            <div class="footer-copyright text-center py-4 ">
+        <footer class="footer fixed-bottom border border-info mt-3">
+            <div class="footer-copyright text-center text-white fon py-4 ">
                 Made possible with <i class="fas fa-coffee"></i>.js . Brought to you by Marko.
             </div>
         </footer>

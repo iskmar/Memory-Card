@@ -1,12 +1,26 @@
+// 1. Doms and variables define
+// 2. All the functions
+// 3. Event Listeners and function calls
 
 
 //////////////////////////////////////////////////////    DOMS / VARIABLES   //////////////////////////////////////////////////////
 
 let fetchInputRadio = document.querySelectorAll("input[type='radio']");
 let fetchInputName = document.getElementById('inputName');
+fetchInputName.style.margin = 'auto';
+fetchInputName.style.width = '60%';
+fetchInputName.style.color = 'darkgreen';
+fetchInputName.classList.add('text-center');
+fetchInputName.style.width = '50%';
+fetchInputName.style.borderRadius = '20px';
+fetchInputName.style.height = '40px';
+fetchInputName.style.fontSize = '30px';
+
+
 let fetchGameTable = document.getElementById('gridDiv');
 let form = document.getElementById('form');
 let time = document.getElementById('timer');
+
 let moves = document.getElementById('moves');
 let btnStartGame = document.getElementById('button');
 let inputCreate = document.createElement('input');
@@ -26,43 +40,40 @@ let playerStorageSet = [];
 
 
 //////////////////////////////////////////////////////    FUNCTIONS   //////////////////////////////////////////////////////
+// let upp = (par) => {
+//     par.value = par.value.toUpperCase();
+//     // console.log(par.value);
+//     return par.value;
+// }
 
-// replace input name field with new one 
+// replace input with new input
+// and call function inside of form event listener
 let inputReplace = () => {
     inputCreate.setAttribute('type', 'text');
     inputCreate.setAttribute('id', 'inputName');
-    inputCreate.style.color = 'red';
-    inputCreate.classList.add('col-12');
-    inputCreate.classList.add('col-md-12');
+    inputCreate.style.color = 'darkgreen';
     inputCreate.classList.add('text-center');
+    inputCreate.style.width = '50%';
+    inputCreate.style.borderRadius = '20px';
+    inputCreate.style.height = '40px';
+    inputCreate.style.fontSize = '30px';
     return inputCreate;
 }
 let startScreenWelcome = () => {
     let fetchGrid = document.getElementById('welcome');
     let fetchP = document.getElementById('welcomeP');
-
-    fetchGrid.innerHTML = '';
-    // let p = document.createElement('p');
-    // fetchP.style.filter = 'none';
     let name = localStorage.getItem('currentUser');
-    fetchGrid.style.backgroundImage = "url('images/sky.jpg')"; 
-    fetchGrid.style.borderRadius = '30px';
-    fetchGrid.style.border = '1px solid darkcyan';
-    fetchGrid.style.filter = "opacity(30%)";
-    fetchGrid.style.padding = '5px';
-    fetchGrid.style.width = '57vw';
-    fetchGrid.style.height = '57vh';
-    fetchGrid.style.margin = '0px auto';
-    fetchGrid.style.display = 'flex';
-    fetchGrid.style.verticalAlign = 'center';
+
     fetchP.style.zIndex = 9999;
+    fetchP.classList.add('text-info')
     fetchP.innerHTML = `WELCOME <br>`;
-    fetchP.innerHTML += `<span style="color: red; filter: opacity(100%);">${name.toUpperCase()}</span>`;
+    fetchP.innerHTML += `<span style="color: orangered; filter: opacity(100%);">${name.toUpperCase()}</span>`;
     fetchP.style.margin = 'auto';
     fetchP.style.fontSize = '60px';
     fetchGrid.appendChild(fetchP);
 }
 
+// get existing localstorage array
 let getLocalStorage = (diff) => {
     if (!localStorage.getItem(`${diff}`)) {
         let tblBody = document.getElementById('tbody');
@@ -73,10 +84,12 @@ let getLocalStorage = (diff) => {
         let tblData2 = document.createElement("td");
         let tblData3 = document.createElement("td");
         let tblData4 = document.createElement("td");
+        
         tblRow.appendChild(tblData1);
         tblRow.appendChild(tblData2);
         tblRow.appendChild(tblData3);
         tblRow.appendChild(tblData4);
+
         tblBody.appendChild(tblRow);
 
     } else {
@@ -84,30 +97,24 @@ let getLocalStorage = (diff) => {
         tblBody.innerHTML = '';
         let countRows = 0;
         let difficultyArray = JSON.parse(localStorage.getItem(`${diff}`));
-        difficultyArray.sort(function (a, b) { return a - b });
         difficultyArray.sort((a, b) => parseFloat(a.time) - parseFloat(b.time));
         let newArray = difficultyArray.slice(0, 5);
 
         for (let i = 0; i < newArray.length; i++) {
             countRows++;
-            let tblRow = document.createElement("tr");
+            let tblRow = document.createElement("tr");;
             let username = newArray[i].username;
             let time = newArray[i].time;
             let movesCount = newArray[i].moves;
             
-
-
             let tblData1 = document.createElement("td");
             let tblData2 = document.createElement("td");
             let tblData3 = document.createElement("td");
             let tblData4 = document.createElement("td");
             let td1 = document.createTextNode(`${countRows}`);
-            let td2 = document.createTextNode(`${username}`);
+            let td2 = document.createTextNode(`${username.toUpperCase()}`);
             let td3 = document.createTextNode(`${secToMin(time)}`);
             let td4 = document.createTextNode(`${movesCount}`);
-            tblData2.style.color = 'red';
-            tblData3.style.color = 'green';
-            tblData4.style.color = 'blue';
 
             tblData1.appendChild(td1);
             tblData2.appendChild(td2);
@@ -123,25 +130,32 @@ let getLocalStorage = (diff) => {
         }
     }
 }
+
+// Depending on level, set new array to localstorage with a key corresponding to the id of difficulty button
 let setTableStorage = (diff) => {
     let currentPlayer = localStorage.getItem('currentUser');
-
+    // get all the data inside of an object
     let player = {
         username: currentPlayer,
         time: countTime,
         difficulty: inputChecked(fetchInputRadio),
         moves: countMoves
     }
-
+    // check to see if key already exists
+    // if not, set new one with current player settings
     if (!localStorage.getItem(`${diff}`)) {
         playerStorageSet.push(player);
         localStorage.setItem(`${diff}`, JSON.stringify(playerStorageSet));
     } else {
+        // if exists,fetch the array
         let getPlayers = JSON.parse(localStorage.getItem(`${diff}`));
+        // loop trough, and assign each object to a new container array
         for (let i = 0; i < getPlayers.length; i++) {
             playerStorageSet.push(getPlayers[i]);
         }
+        // update array with new value 
         playerStorageSet.push(player);
+        // set local storage with newly created container array
         localStorage.setItem(`${diff}`, JSON.stringify(playerStorageSet));
     }
 }
@@ -169,14 +183,16 @@ let checkCards = (card) => {
 
                 if (openedCards === imgArray.length) {
                     console.log('goodbye');
-                    // countMoves = 0;
-                    console.log(countMoves);
                     clearInterval(timer);
                     setTableStorage(inputChecked(fetchInputRadio));
                     setTimeout(() => {
                         let answer = confirm("Da li zelite novu igru?");
                         if (answer) {
                             location.reload();
+                            // resetBoard();
+                            // setTimeout(() => {
+                            //     getBoard();
+                            // }, 200);
                         }
                     }, 500);
 
@@ -208,7 +224,7 @@ let saveNameStorage = (name) => {
     } else {
         let currentName = inputName;
         localStorage.setItem('currentUser', inputName);
-        return localStorage.getItem('currentUser');
+        return localStorage.getItem('currentUser').toUpperCase();
     }
 }
 
@@ -217,14 +233,8 @@ let getBoard = () => {
     let count = getLevelValue(fetchInputRadio) ** 2;
     pushImgArray(count);
     shuffleArray(imgArray);
-    fetchGameTable.style.backgroundImage = "url('images/sky.jpg')"; 
-    // let bkGrImage = document.createElement('img');
-    // bkGrImage.style.filter = 'opacity(30%)';
-    // bkGrImage.style.width = '100%';
-    // bkGrImage.style.height = '100vh';
-    // bkGrImage.setAttribute('src','images/sky.jpg');
-    // fetchGameTable.style.filter = 'drop-shadow(16px 16px 20px red) invert(75%)';
-    fetchGameTable.style.border = '1px solid darkcyan';
+    fetchGameTable.style.backgroundImage = "url('images/background.png')"; 
+    fetchGameTable.style.border = '2px solid darkcyan';
     fetchGameTable.style.padding = '5px';
     fetchGameTable.style.margin = '0px auto';
     fetchGameTable.style.borderRadius = '30px';
@@ -237,29 +247,29 @@ let getBoard = () => {
         let imgBack = document.createElement('img');
 
         if (count === 16) {
-            fetchGameTable.style.width = '70%';
+            fetchGameTable.style.width = '60%';
             fetchGameTable.style.position = 'relative';
             divCard.style.width = '20%';
             divCard.style.height = '20%';
         } else if (count === 36) {
-            fetchGameTable.style.width = '80%';
+            fetchGameTable.style.width = '60%';
             fetchGameTable.style.position = 'relative';
             divCard.style.width = '14%';
             // divCard.style.height = 'auto';
         } else if (count === 64) {
-            fetchGameTable.style.width = '80%';
+            fetchGameTable.style.width = '70%';
             fetchGameTable.style.position = 'relative';
             divCard.style.width = '11%';
         } else {
-            fetchGameTable.style.width = '80%';
+            fetchGameTable.style.width = '70%';
             fetchGameTable.style.position = 'relative';
             divCard.style.width = '8.5%';
         }
 
         divCard.style.display = 'inline-block';
         divCard.style.position = 'relative';
-        divCard.style.border = '1px solid darkcyan';
-        divCard.style.borderRadius = '10px';
+        divCard.style.border = '3px solid darkcyan';
+        divCard.style.borderRadius = '15px';
         divCard.style.margin = '5px';
         divCard.style.cursor = 'pointer';
         divCard.style.textAlign = 'center';
@@ -275,7 +285,7 @@ let getBoard = () => {
         imgBack.style.left = '0px';
         imgBack.setAttribute('id', i);
         imgBack.setAttribute('data-id', `data_${imgArray[i]}`);
-        imgBack.setAttribute('src', 'images/closedCard.png');
+        imgBack.setAttribute('src', 'images/title.png');
 
 
 
@@ -297,7 +307,7 @@ let getBoard = () => {
 
 let startGameMoves = () => {
     moves.innerHTML = `Moves: `;
-    moves.style.color = 'blue';
+    moves.style.color = 'cyan';
     moves.innerHTML += countMoves;
 }
 // Push number of images into array depending on which level ** 2
@@ -320,9 +330,11 @@ let shuffleArray = (array) => {
 let resetBoard = () => {
     clearInterval(timer);
     countTime = 0;
-    time.style.color = 'green';
+    time.style.color = 'cyan';
+    time.style.fontSize = '20px';
     time.innerHTML = 'Time: ';
-    moves.style.color = 'blue';
+    moves.style.color = 'cyan';
+    moves.style.fontSize = '20px';
     moves.innerHTML = 'Moves: '
     fetchGameTable.innerHTML = '';
     imgArray = [];
@@ -361,7 +373,7 @@ let startGameTimer = () => {
     if (timer === null) {
         timer = setInterval(() => {
             countTime++;
-            time.style.color = 'green';
+            time.style.color = 'cyan';
             time.style.borderRadius = '20px';
             time.innerHTML = 'Time: ';
             time.innerHTML += countTime;
@@ -388,6 +400,7 @@ for (let i = 0; i < btnTable.length; i++) {
         } 
     })
 }
+// window.onload = getBoard();
 //////////////////////////////////////////////////////    FUNCTION CALLS  //////////////////////////////////////////////////////
 
 
@@ -401,12 +414,14 @@ for (let i = 0; i < btnTable.length; i++) {
 // replace original input field with new one
 // created by fetching name from localStorage
 form.addEventListener('submit', event => {
+        // resetBoard()
     event.preventDefault();
     saveNameStorage(fetchInputName);
     if (fetchInputName.value === '' || fetchInputName.value === null) {
     } else {
         let fetchInputName = document.getElementById('inputName');
         inputReplace();
+        // resetBoard();
         let createNode = document.createTextNode(`${saveNameStorage(fetchInputName)}`);
         inputCreate.value = createNode.data;
         form.removeChild(fetchInputName);
@@ -430,10 +445,10 @@ btnStartGame.addEventListener('click', () => {
         form.appendChild(inputCreate);
         setTimeout(() => {
             getBoard();
-        }, 200);
-        // setTimeout(() => {
-        //     window.location.href = '#gridDiv';
-        // }, 500);
+        });
+        setTimeout(() => {
+            window.location.href = '#gridDiv';
+        },500);
     }
 });
 
@@ -443,5 +458,6 @@ btnStartGame.addEventListener('click', () => {
 // Known bugs
 // 1. Fix infinite array.length inside of localstorage
 // 2. Fix footer
-// 3. Fix input name replacing
+// 3. Fix input name replacing and uppercasing
 // 4. Fix fetchGrid error on name change when game starts
+// 5. Add reset button to the table to reset diff score 
