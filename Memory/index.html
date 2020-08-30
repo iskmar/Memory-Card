@@ -17,28 +17,28 @@
 
 <body>
     <div class="container-fluid">
+        <!-- MAIN HEADING -->
         <div class="row align-items-center">
             <h1 class="col-sm-12 text-light text-center">Memory Game</h1>
         </div>
+        <!-- MAIN ROW -->
         <div class="row no-gutters">
+            <!-- LEFT SIDE - FORM AND GAME TABLE -->
             <div class="col-lg-8">
                 <!-- INFO ROW name, input,diff and button -->
                 <div class="col-12">
-                    <!-- Heading and timer row -->
+                    <!-- Total moves and timer -->
                     <div class="row no-gutters">
                         <div style="margin-left: auto;" class="col-1 text-center">
                             <p id="moves" class="my-auto align-self-center"></p>
-                        </div>
-                        <div class="col-sm-10 text-light text-center">
-                            <h5>Igra Memorije</h5>
                         </div>
                         <div style="margin-right: auto;" class="col-1 text-center">
                             <p id="timer" class="my-auto align-self-center"></p>
                         </div>
                     </div>
-                    <!-- Input, radio buttons and button in the same row -->
+                    <!-- INPUT, RADIO BUTTONS, START GAME BUTTON-->
                     <!-- Input name -->
-                    <div class="row no-gutters">
+                    <div class="row no-gutters pt-5">
                         <form action="" class="col-sm-12 d-flex justify-content-center" id="form">
                                 <input style="width: 100%;" type="text" class="text-center" id="inputName" placeholder="Unesite ime">
                         </form>
@@ -47,16 +47,16 @@
                     <div
                         class="row no-gutters text-light justify-content-sm-around justify-content-md-center justify-content-xl-center">
                         <label class="col col-sm-auto col-md-auto text-center">
-                            <input type="radio" value="4" name="difficulty" id="easy" checked="checked">Lako
+                            <input type="radio" value="4" name="difficulty" id="easy" checked="checked">Easy
                         </label>
                         <label class="col col-sm-auto col-md-auto text-center">
-                            <input type="radio" value="6" name="difficulty" id="middle">Srednje
+                            <input type="radio" value="6" name="difficulty" id="middle">Intermediate
                         </label>
                         <label class="col col-sm-auto col-md-auto text-center">
-                            <input type="radio" value="8" name="difficulty" id="hard">Tesko
+                            <input type="radio" value="8" name="difficulty" id="hard">Hard
                         </label>
                         <label class="col col-sm-auto col-md-auto text-center">
-                            <input type="radio" value="10" name="difficulty" id="expert">Ekspert
+                            <input type="radio" value="10" name="difficulty" id="expert">Expert
                         </label>
                     </div>
                     <!-- Start new game button -->
@@ -68,7 +68,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- GAME BOARD STARTS-->
+                <!-- GAME BOARD -->
                 <div class="col-12 border-info align-items-center text-center" id="gameTable">
                     <div id="gridDiv">
                         <div id="welcome">
@@ -80,19 +80,22 @@
             <!-- BEST RESULTS -->
             <div class="col-lg-4">
                 <div class="col-12">
+                    <!-- SCORE HEADING -->
                     <div class="col-12 text-light text-center">
-                        <h5>Najbolji rezultati</h5>
+                        <h5>TOP 5 RESULTS</h5>
                     </div>
+                    <!-- SCORE LEVEL BUTTONS -->
                     <div class="row no-gutters">
                         <button class="btn btn-light col-6 col-sm-6 col-md-3" name="tableButtons"
-                            id="easy">Lako</button>
+                            id="easy">Easy</button>
                         <button class="btn btn-light col-6 col-sm-6 col-md-3" name="tableButtons"
-                            id="middle">Srednje</button>
+                            id="middle">Intermediate</button>
                         <button class="btn btn-light col-6 col-sm-6 col-md-3" name="tableButtons"
-                            id="hard">Tesko</button>
+                            id="hard">Hard</button>
                         <button class="btn btn-light col-6 col-sm-6 col-md-3" name="tableButtons"
-                            id="expert">Ekspert</button>
+                            id="expert">Expert</button>
                     </div>
+                    <!-- SCORE TABLE -->
                     <div class="row no-gutters">
                         <table id="table" class="table text-light table-bordered">
                             <thead>
@@ -104,13 +107,14 @@
                                 </tr>
                             </thead>
                             <tbody id="tbody">
-                                <!-- Table goes here-->
+                                <!-- TABLE PRINT OUT-->
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- FOOTER -->
         <footer class="footer fixed-bottom border border-info mt-3">
             <div class="footer-copyright text-center text-white fon py-4 ">
                 Made possible with <i class="fas fa-coffee"></i>.js . Brought to you by Marko.
