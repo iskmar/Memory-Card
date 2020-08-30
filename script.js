@@ -64,6 +64,7 @@ let startScreenWelcome = () => {
     let fetchP = document.getElementById('welcomeP');
     let name = localStorage.getItem('currentUser');
     fetchGrid.innerHTML = '';
+    fetchGrid.style.border = '2px solid darkcyan';
     fetchP.style.zIndex = 9999;
     fetchP.classList.add('text-info')
     fetchP.innerHTML = `WELCOME <br>`;

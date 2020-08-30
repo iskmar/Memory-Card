@@ -48,7 +48,6 @@ footer {
 #welcome {  
     background-image: "url('images/background.png')"; 
     border-radius:30px;
-    border: 2px solid darkcyan;
     padding: 5px;
     width: 57vw;
     height: 57vh;
