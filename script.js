@@ -305,7 +305,7 @@ let getBoard = () => {
         imgBack.style.left = '0px';
         imgBack.setAttribute('id', i);
         imgBack.setAttribute('data-id', `data_${imgArray[i]}`);
-        imgBack.setAttribute('src', 'images/title.png');
+        imgBack.setAttribute('src', 'images/closedCard.png');
 
         // append cards to the game table
         divCard.appendChild(imgFront);
