@@ -63,7 +63,7 @@ let startScreenWelcome = () => {
     let fetchGrid = document.getElementById('welcome');
     let fetchP = document.getElementById('welcomeP');
     let name = localStorage.getItem('currentUser');
-
+    fetchGrid.innerHTML = '';
     fetchP.style.zIndex = 9999;
     fetchP.classList.add('text-info')
     fetchP.innerHTML = `WELCOME <br>`;
@@ -84,7 +84,7 @@ let getLocalStorage = (diff) => {
         let tblData2 = document.createElement("td");
         let tblData3 = document.createElement("td");
         let tblData4 = document.createElement("td");
-        
+
         tblRow.appendChild(tblData1);
         tblRow.appendChild(tblData2);
         tblRow.appendChild(tblData3);
