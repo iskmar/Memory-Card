@@ -258,7 +258,7 @@ let getBoard = () => {
     // set basic css for background
     // fetchGameTable.style.backgroundImage = "url('/images/background.png')"; 
     fetchGameTable.style.border = '2px solid darkcyan';
-    fetchGameTable.style.padding = '5px';
+    // fetchGameTable.style.padding = '5px';
     fetchGameTable.style.margin = '0px auto';
     fetchGameTable.style.borderRadius = '30px';
 
@@ -268,43 +268,33 @@ let getBoard = () => {
         let divCard = document.createElement('div');
         let imgFront = document.createElement('img');
         let imgBack = document.createElement('img');
+        let screenSize = window.matchMedia("(max-width: 960px)");
         // set board size depending on count variable(difficulty level)
         if (count === 16) {
             fetchGameTable.style.width = '60%';
-            fetchGameTable.style.position = 'relative';
             divCard.style.width = '20%';
             divCard.style.height = '20%';
         } else if (count === 36) {
             fetchGameTable.style.width = '60%';
-            fetchGameTable.style.position = 'relative';
             divCard.style.width = '14%';
         } else if (count === 64) {
             fetchGameTable.style.width = '70%';
-            fetchGameTable.style.position = 'relative';
             divCard.style.width = '11%';
         } else {
             fetchGameTable.style.width = '70%';
-            fetchGameTable.style.position = 'relative';
-            divCard.style.width = '8.5%';
-        }
-        // set cards css
-        divCard.style.display = 'inline-block';
-        divCard.style.position = 'relative';
-        divCard.style.border = '3px solid darkcyan';
-        divCard.style.borderRadius = '15px';
-        divCard.style.margin = '5px';
-        divCard.style.cursor = 'pointer';
-        divCard.style.textAlign = 'center';
+          divCard.style.width = '8.5%';
 
-        imgFront.style.width = '100%';
-        imgFront.style.height = '100%';
+              }
+            
+
+        // set cards css
+
+        divCard.classList.add('divCard');
+
+        imgFront.classList.add('imgFront');
         imgFront.setAttribute('src', `images/${imgArray[i]}.png`);
 
-        imgBack.style.width = '100%';
-        imgBack.style.height = '100%';
-        imgBack.style.position = 'absolute';
-        imgBack.style.top = '0px';
-        imgBack.style.left = '0px';
+        imgBack.classList.add('imgback');
         imgBack.setAttribute('id', i);
         imgBack.setAttribute('data-id', `data_${imgArray[i]}`);
         imgBack.setAttribute('src', 'images/closedCard.png');
