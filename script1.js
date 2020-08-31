@@ -40,48 +40,75 @@ let playerStorageSet = [];
 
 
 //////////////////////////////////////////////////////    FUNCTIONS   //////////////////////////////////////////////////////
-
-// let startScreenWelcome = () => {
-//     fetchGrid = document.getElementById('welcome');
-//     let fetchP = document.getElementById('welcomeP');
-//     let name = localStorage.getItem('currentUser');
-//     fetchGameTable.innerHTML = '';
-//     fetchGrid.innerHTML = '';
-//     fetchGrid.style.border = '2px solid darkcyan';
-//     fetchP.classList.add('text-info')
-//     fetchP.innerHTML = `WELCOME <br>`;
-//     fetchP.innerHTML += `<span style="color: orangered; filter: opacity(100%);">${name.toUpperCase()}</span>`;
-//     fetchP.style.margin = 'auto';
-//     fetchP.style.fontSize = '60px';
-//     fetchGrid.appendChild(fetchP);
+// let upp = (par) => {
+//     par.value = par.value.toUpperCase();
+//     // console.log(par.value);
+//     return par.value;
 // }
 
-// get existing localstorage array
-// function checks for 
+// replace input with new input
+// and call function inside of form event listener
+let inputReplace = () => {
+    inputCreate.setAttribute('type', 'text');
+    inputCreate.setAttribute('id', 'inputName');
+    inputCreate.style.color = 'darkgreen';
+    inputCreate.classList.add('text-center');
+    inputCreate.style.width = '50%';
+    inputCreate.style.borderRadius = '20px';
+    inputCreate.style.height = '40px';
+    inputCreate.style.fontSize = '30px';
+    return inputCreate;
+}
+let startScreenWelcome = () => {
+
+    let fetchGrid = document.getElementById('welcome');
+    let fetchP = document.getElementById('welcomeP');
+    let name = localStorage.getItem('currentUser');
+
+    // fetchGameTable.innerHTML = '';
+    // fetchGrid.innerHTML = '';
+
+    // fetchGrid.style.backgroundImage = "url('images/background.png')"; 
+    fetchGrid.style.borderRadius = '30px';
+    fetchGrid.style.border = '2px solid darkcyan';
+    fetchGrid.style.padding = '5px';
+    fetchGrid.style.width = '57vw';
+    fetchGrid.style.height = '57vh';
+    fetchGrid.style.margin = '0px auto';
+    // fetchGrid.style.display = 'flex';
+    fetchGrid.style.verticalAlign = 'center';
+
+    fetchP.classList.add('text-info')
+    fetchP.innerHTML = `WELCOME <br>`;
+    fetchP.innerHTML += `<span style="color: orangered; filter: opacity(100%);">${name.toUpperCase()}</span>`;
+    fetchP.style.margin = 'auto';
+    fetchP.style.fontSize = '60px';
+    fetchGrid.appendChild(fetchP);
+}
+
 let getLocalStorage = (diff) => {
-    // if localstorage is empty, print out borders only for visual
     if (!localStorage.getItem(`${diff}`)) {
         let tblBody = document.getElementById('tbody');
         tblBody.innerHTML = '';
         let tblRow = document.createElement("tr");
         tblRow.style.height = '50px';
+        // tblRow.style.filter = 'contrast(50%)';
         let tblData1 = document.createElement("td");
         let tblData2 = document.createElement("td");
         let tblData3 = document.createElement("td");
         let tblData4 = document.createElement("td");
-
         tblRow.appendChild(tblData1);
         tblRow.appendChild(tblData2);
         tblRow.appendChild(tblData3);
         tblRow.appendChild(tblData4);
-
         tblBody.appendChild(tblRow);
+
     } else {
-        // else print out table
         let tblBody = document.getElementById('tbody');
         tblBody.innerHTML = '';
         let countRows = 0;
         let difficultyArray = JSON.parse(localStorage.getItem(`${diff}`));
+        // difficultyArray.sort(function (a, b) { return a - b });
         difficultyArray.sort((a, b) => parseFloat(a.time) - parseFloat(b.time));
         let newArray = difficultyArray.slice(0, 5);
 
@@ -116,8 +143,6 @@ let getLocalStorage = (diff) => {
     }
 }
 
-// Depending on level, set new array to localstorage with a key corresponding to the id of difficulty button
-// function called only when game is finished
 let setTableStorage = (diff) => {
 
     let currentPlayer = localStorage.getItem('currentUser');
@@ -159,44 +184,32 @@ let setTableStorage = (diff) => {
         localStorage.setItem(`${diff}`, JSON.stringify(getPlayers));
     }
 }
-// check cards for matching
-// forbid more than two cards opened at all times
-// function does all the work 
-// removes css,checks validity, restores previous settings
 let checkCards = (card) => {
-    // check if only two cards are opened at a time
     if (flippedCards.length < 2) {
-        // flip the card if flippedCards array is explicitly less then 2
+        // flip  the card if flippedCards array is explicitly less then 2
         card.classList.toggle('flipped');
-        // push first card into array
+
         if (flippedCards.length === 0) {
             // input card
             flippedCards.push(card.dataset.id);
             flippedCardsId.push(card.id);
-            // push second card and check if match
+
         } else if (flippedCards.length === 1) {
+            // input card value
             countMoves++;
-            // print out how many moves
             startGameMoves();
             flippedCards.push(card.dataset.id);
             flippedCardsId.push(card.id);
-            // check if cards match
             if (flippedCards[0] === flippedCards[1]) {
-                // push 2 cards for evaluation if game is finished
+
                 openedCards += 2;
-                // empty array for storing flipped cards
                 flippedCards = [];
                 flippedCardsId = [];
-                // check if total number of opened cards match the array for storing cards 
+
                 if (openedCards === imgArray.length) {
-                    // console.log('goodbye');
-                    // after game is finished
-                    // clear interval
+                    console.log('goodbye');
                     clearInterval(timer);
-                    // push player info to local storage
                     setTableStorage(inputChecked(fetchInputRadio));
-                    // delay 500 ms and reload if confirmed
-                    // else leave the game in state when finished
                     setTimeout(() => {
                         let answer = confirm("Da li zelite novu igru?");
                         if (answer) {
@@ -210,8 +223,7 @@ let checkCards = (card) => {
 
                 }
             } else {
-                // if flipped cards do not match
-                // close them and reset styles
+                // close the cards and reset styles
                 function closeCard() {
                     let card1 = document.getElementById(`${flippedCardsId[0]}`);
                     let card2 = document.getElementById(`${flippedCardsId[1]}`);
@@ -221,53 +233,44 @@ let checkCards = (card) => {
                     if (card2.classList.contains('flipped')) {
                         card2.classList.toggle('flipped');
                     }
-                    // empty array for storing flipped cards
                     flippedCards = [];
                     flippedCardsId = [];
                 }
-
                 setTimeout(closeCard, 700);
             }
         }
     }
 }
 
-// check if name is input
-// if() push name to local storage
 let saveNameStorage = (name) => {
     let inputName = name.value;
     if (!inputName || inputName === "") {
         alert("Molimo vas unesite sve podatke");
     } else {
+        let currentName = inputName;
         localStorage.setItem('currentUser', inputName);
-        // return localStorage.getItem('currentUser').toUpperCase();
+        return localStorage.getItem('currentUser').toUpperCase();
     }
 }
-// print out the board
+
 let getBoard = () => {
-    // check to see which level 
-    // getlevelvalue returns number as value
     getLevelValue(fetchInputRadio);
-    // square returned level value
     let count = getLevelValue(fetchInputRadio) ** 2;
-    // push as many images as the value of count
     pushImgArray(count);
-    // shuffle content in array
     shuffleArray(imgArray);
-    // set basic css for background
-    // fetchGameTable.style.backgroundImage = "url('/images/background.png')"; 
+    fetchGameTable.style.backgroundImage = "url('images/background.png')"; 
     fetchGameTable.style.border = '2px solid darkcyan';
     fetchGameTable.style.padding = '5px';
     fetchGameTable.style.margin = '0px auto';
     fetchGameTable.style.borderRadius = '30px';
 
-    // loop trough array
+
     for (let i = 0; i < imgArray.length; i++) {
-        // set cards' DOM
+
         let divCard = document.createElement('div');
         let imgFront = document.createElement('img');
         let imgBack = document.createElement('img');
-        // set board size depending on count variable(difficulty level)
+
         if (count === 16) {
             fetchGameTable.style.width = '60%';
             fetchGameTable.style.position = 'relative';
@@ -277,6 +280,7 @@ let getBoard = () => {
             fetchGameTable.style.width = '60%';
             fetchGameTable.style.position = 'relative';
             divCard.style.width = '14%';
+            // divCard.style.height = 'auto';
         } else if (count === 64) {
             fetchGameTable.style.width = '70%';
             fetchGameTable.style.position = 'relative';
@@ -286,7 +290,7 @@ let getBoard = () => {
             fetchGameTable.style.position = 'relative';
             divCard.style.width = '8.5%';
         }
-        // set cards css
+
         divCard.style.display = 'inline-block';
         divCard.style.position = 'relative';
         divCard.style.border = '3px solid darkcyan';
@@ -308,33 +312,29 @@ let getBoard = () => {
         imgBack.setAttribute('data-id', `data_${imgArray[i]}`);
         imgBack.setAttribute('src', 'images/closedCard.png');
 
-        // append cards to the game table
+
+
         divCard.appendChild(imgFront);
         divCard.appendChild(imgBack);
         fetchGameTable.appendChild(divCard);
+        // fetchGameTable.appendChild(bkGrImage);
 
-        // add event listener to each card
-        // first click is only click
-        // adds game timer
-        // sets current name to localstorage
         divCard.addEventListener('click', () => {
             startGameTimer();
             localStorage.setItem('currentUser', inputCreate.value);
         });
-        // event lister on foreground image
-        // calls function that checks the cards
+
         imgBack.addEventListener('click', function () {
             checkCards(this);
         });
     }
 }
-// simple func to print game moves
+
 let startGameMoves = () => {
     moves.innerHTML = `Moves: `;
     moves.style.color = 'cyan';
     moves.innerHTML += countMoves;
 }
-
 // Push number of images into array depending on which level ** 2
 let pushImgArray = (count) => {
     for (let i = 1; i <= count / 2; i++) {
@@ -352,10 +352,7 @@ let shuffleArray = (array) => {
     }
     return array;
 }
-// rather than reloading page
-// reset all the settings to how they were when game started
 let resetBoard = () => {
-    fetchGameTable.innerHTML = '';
     let allDivs = document.querySelectorAll('div');
     for (let i = 0; i < allDivs.length; i++) {
         if(allDivs[i].classList.contains('flipped')) {
@@ -370,12 +367,14 @@ let resetBoard = () => {
     moves.style.color = 'cyan';
     moves.style.fontSize = '20px';
     moves.innerHTML = 'Moves: '
+    fetchGameTable.innerHTML = '';
     imgArray = [];
     openedCards = 0;
     timer = null;
     countMoves = 0;
 }
-// transform seconds to minutes for score table
+
+
 let secToMin = (par) => {
     let mins = Math.floor(par / 60);
     let sec = par % 60;
@@ -385,10 +384,8 @@ let secToMin = (par) => {
         return `${mins} min : ${sec} sec`;
     }
 }
-// checks which radio button is checked
-// returns id of the button
-// id corrseponds to the difficulty level
-// called only when storing player info to localstorage
+
+
 let inputChecked = (array) => {
     for (let i = 0; i < array.length; i++) {
         if (array[i].checked) {
@@ -396,7 +393,7 @@ let inputChecked = (array) => {
         }
     }
 }
-// returns number value of radio button checked
+
 let getLevelValue = (array) => {
     for (let i = 0; i < array.length; i++) {
         if (array[i].checked) {
@@ -404,9 +401,7 @@ let getLevelValue = (array) => {
         }
     }
 };
-// start the game timer
-// called on first click of the game
-// print out results
+
 let startGameTimer = () => {
     if (timer === null) {
         timer = setInterval(() => {
@@ -419,7 +414,8 @@ let startGameTimer = () => {
     }
     return countTime;
 }
-
+// disable input field after submit
+// called on form submit
 function disableForm(boolean) {
     inputName.disabled = boolean;
     // btnSubmitName.disabled = boolean;
@@ -430,13 +426,8 @@ function disableForm(boolean) {
 
 
 //////////////////////////////////////////////////////    FUNCTION CALLS  //////////////////////////////////////////////////////
-
-// table always printed
 getLocalStorage(inputChecked(fetchInputRadio));
 
-// score buttons css
-// applies css only if clicked
-// when other button is clicked,previous loses classs and therefore css
 for (let i = 0; i < btnTable.length; i++) {
     btnTable[i].addEventListener('click', () => {
         getLocalStorage(btnTable[i].id);
@@ -456,43 +447,36 @@ for (let i = 0; i < btnTable.length; i++) {
 
 //////////////////////////////////////////////////////    EVENT LISTENERS   //////////////////////////////////////////////////////
 
-
-
 // event listener on enter
 // replace original input field with new one
 // created by fetching name from localStorage
 form.addEventListener('submit', event => {
-    event.preventDefault();
-    // on enter, save name to local storage
+    // event.preventDefault();
     saveNameStorage(fetchInputName);
-    // checks if input field is empty
-    // if empty, do nothing and throw alert from previusly called function that stores names
     if (fetchInputName.value === '' || fetchInputName.value === null) {
     } else {
         disableForm(true);
         resetBoard();
-        // startScreenWelcome();
+        startScreenWelcome();
     }
 
 });
 
-// start new game
+
 btnStartGame.addEventListener('click', () => {
-    // dont start game if input field is empty
     if (fetchInputName.value === '' || fetchInputName.value === null) {
         alert("Molimo vas unesite sve podatke");
     } else {
-        // if game already finished
-        // reset the board
-        disableForm(false);
         resetBoard();
-        // delay 500 ms after button click
+        let fetchInputName = document.getElementById('inputName');
+        inputReplace();
+        let createNode = document.createTextNode(`${saveNameStorage(fetchInputName)}`);
+        inputCreate.value = createNode.data;
+        form.removeChild(fetchInputName);
+        form.appendChild(inputCreate);
         setTimeout(() => {
             getBoard();
         });
-        // move window to give focus on game table
-        // usefull for bigger tables
-        // wait when clicked 
         setTimeout(() => {
             window.location.href = '#gridDiv';
         },500);
@@ -504,8 +488,7 @@ btnStartGame.addEventListener('click', () => {
 
 // Known bugs
 // Fixed 1. Fix infinite array.length inside of localstorage
-// Fixed 2. Fix input replacing
-// 3. Fix fetchGrid error on name change when game starts
-//      - if name changes - reset board
-// 4. Add reset button to the table to reset table
-// 5. Fix icons size on hard and expert level
+// Fixed 2. Fix footer
+// Fixed 3. Fix input name replacing and uppercasing
+// 4. Fix fetchGrid error on name change when game starts
+// 5. Add reset button to the table to reset diff score 
