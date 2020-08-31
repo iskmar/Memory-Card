@@ -42,10 +42,11 @@ let playerStorageSet = [];
 //////////////////////////////////////////////////////    FUNCTIONS   //////////////////////////////////////////////////////
 
 // let startScreenWelcome = () => {
-//     fetchGrid = document.getElementById('welcome');
+//     let fetchGameTable = document.getElementById('gridDiv');
+//     let fetchGrid = document.getElementById('welcome');
 //     let fetchP = document.getElementById('welcomeP');
 //     let name = localStorage.getItem('currentUser');
-//     fetchGameTable.innerHTML = '';
+//     // fetchGameTable.innerHTML = '';
 //     fetchGrid.innerHTML = '';
 //     fetchGrid.style.border = '2px solid darkcyan';
 //     fetchP.classList.add('text-info')
@@ -422,6 +423,7 @@ let startGameTimer = () => {
     return countTime;
 }
 
+// disable input field on form submit
 function disableForm(boolean) {
     inputName.disabled = boolean;
     // btnSubmitName.disabled = boolean;
@@ -457,8 +459,6 @@ for (let i = 0; i < btnTable.length; i++) {
 
 
 //////////////////////////////////////////////////////    EVENT LISTENERS   //////////////////////////////////////////////////////
-
-
 
 // event listener on enter
 // replace original input field with new one
