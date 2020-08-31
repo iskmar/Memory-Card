@@ -240,7 +240,7 @@ let saveNameStorage = (name) => {
         alert("Molimo vas unesite sve podatke");
     } else {
         localStorage.setItem('currentUser', inputName);
-        // return localStorage.getItem('currentUser').toUpperCase();
+        return localStorage.getItem('currentUser').toUpperCase();
     }
 }
 // print out the board
@@ -319,7 +319,8 @@ let getBoard = () => {
         // sets current name to localstorage
         divCard.addEventListener('click', () => {
             startGameTimer();
-            localStorage.setItem('currentUser', inputCreate.value);
+            saveNameStorage(fetchInputName);
+            // localStorage.setItem('currentUser', inputCreate.value);
         });
         // event lister on foreground image
         // calls function that checks the cards
@@ -356,6 +357,7 @@ let shuffleArray = (array) => {
 // reset all the settings to how they were when game started
 let resetBoard = () => {
     fetchGameTable.innerHTML = '';
+    fetchGameTable.style = 'none';
     let allDivs = document.querySelectorAll('div');
     for (let i = 0; i < allDivs.length; i++) {
         if(allDivs[i].classList.contains('flipped')) {
@@ -463,8 +465,6 @@ for (let i = 0; i < btnTable.length; i++) {
 // created by fetching name from localStorage
 form.addEventListener('submit', event => {
     event.preventDefault();
-    // on enter, save name to local storage
-    saveNameStorage(fetchInputName);
     // checks if input field is empty
     // if empty, do nothing and throw alert from previusly called function that stores names
     if (fetchInputName.value === '' || fetchInputName.value === null) {
@@ -505,7 +505,7 @@ btnStartGame.addEventListener('click', () => {
 // Known bugs
 // Fixed 1. Fix infinite array.length inside of localstorage
 // Fixed 2. Fix input replacing
-// 3. Fix fetchGrid error on name change when game starts
+// Fixed 3. Fix fetchGrid error on name change when game starts
 //      - if name changes - reset board
 // 4. Add reset button to the table to reset table
 // 5. Fix icons size on hard and expert level
