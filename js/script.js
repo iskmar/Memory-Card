@@ -244,6 +244,7 @@ let saveNameStorage = (name) => {
         return localStorage.getItem('currentUser').toUpperCase();
     }
 }
+
 // print out the board
 let getBoard = () => {
     // check to see which level 
@@ -256,7 +257,6 @@ let getBoard = () => {
     // shuffle content in array
     shuffleArray(imgArray);
     // set basic css for background
-    // fetchGameTable.style.backgroundImage = "url('/images/background.png')"; 
     fetchGameTable.style.border = '2px solid darkcyan';
     // fetchGameTable.style.padding = '5px';
     fetchGameTable.style.margin = '0px auto';
@@ -270,21 +270,60 @@ let getBoard = () => {
         let imgBack = document.createElement('img');
         let screenSize = window.matchMedia("(max-width: 960px)");
         // set board size depending on count variable(difficulty level)
+        // console.log(count);
         if (count === 16) {
-            fetchGameTable.style.width = '60%';
-            divCard.style.width = '20%';
-            divCard.style.height = '20%';
+            let mq = window.matchMedia( "(max-width: 960px)" );
+            if (mq.matches) {
+                fetchGameTable.style.width = '100%';
+                divCard.style.width = '20%';
+                divCard.style.height = '20%';
+            } else {
+                fetchGameTable.style.width = '60%';
+            }
         } else if (count === 36) {
-            fetchGameTable.style.width = '60%';
-            divCard.style.width = '14%';
-        } else if (count === 64) {
-            fetchGameTable.style.width = '70%';
-            divCard.style.width = '11%';
-        } else {
-            fetchGameTable.style.width = '70%';
-          divCard.style.width = '8.5%';
+            let ma = window.matchMedia( "(max-width: 960px)" );
+            if (ma.matches) {
+                fetchGameTable.style.width = '100%';
+                divCard.style.width = '13%';
+                divCard.style.height = '13%';
+                divCard.style.padding = '1px';
+                console.log('hi');
+                // fetchGameTable.style.padding = '2px';
+            } else {
+                console.log('hello');
+                fetchGameTable.style.width = '60%';
+                divCard.style.width = '14%';
+            }
 
-              }
+        } else if (count === 64) {
+            let ms = window.matchMedia( "(max-width: 960px)" );
+            if (ms.matches) {
+                fetchGameTable.style.width = '100%';
+                divCard.style.width = '10%';
+                divCard.style.height = '10%';
+                divCard.style.padding = '1px';
+                console.log('hi');
+                // fetchGameTable.style.padding = '2px';
+            } else {
+                console.log('hello');
+                fetchGameTable.style.width = '70%';
+                divCard.style.width = '10%';
+            }
+        } else {
+            let ms = window.matchMedia( "(max-width: 960px)" );
+            if (ms.matches) {
+                fetchGameTable.style.width = '100%';
+                divCard.style.width = '8%';
+                divCard.style.height = '8%';
+                divCard.style.padding = '1px';
+                // console.log('hi');
+                // fetchGameTable.style.padding = '2px';
+            } else {
+                console.log('hello');
+                fetchGameTable.style.width = '80%';
+                divCard.style.width = '8%';
+            }
+        }
             
 
         // set cards css
@@ -427,6 +466,7 @@ function disableForm(boolean) {
 
 // table always printed
 getLocalStorage(inputChecked(fetchInputRadio));
+// getBoard();
 
 // score buttons css
 // applies css only if clicked

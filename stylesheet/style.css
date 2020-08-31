@@ -22,10 +22,12 @@ img {
     width: 100%;
     margin-bottom: 73px;
     position: relative;
+    padding-right: 0px;
 
 }
 #gridDiv {
     position: relative;
+    width: 70%;
 }
 .divCard {
     display: inline-block;
@@ -50,7 +52,7 @@ img {
     left: 0px;
 }
 
-footer {
+/* footer {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -58,7 +60,7 @@ footer {
     font-size: 20px;
     background: url("/images/background.png");
     opacity: 90%;
-}
+} */
 .container-fluid {
     margin-bottom: 100px;
     position: relative;
@@ -67,6 +69,10 @@ footer {
 @media only screen and (min-width: 200px) and (max-width: 960px) {
     #gridDiv {
         width: 100%;
+        
+    }
+    #inputName {
+        font-size: 15px;
     }
 }
 /* @media only screen and (min-width: 960px) {
