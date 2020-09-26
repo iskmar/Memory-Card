@@ -4,7 +4,8 @@
     box-sizing: border-box;
 }
 body {
-    background-image: url("/images/background.png");
+    background: rgb(174,176,130);
+    background: linear-gradient(0deg, rgba(174,176,130,1) 0%, rgba(0,96,46,1) 100%);
     height: 100%;
     width: 100%;
 }
@@ -69,6 +70,9 @@ img {
 @media only screen and (min-width: 200px) and (max-width: 960px) {
     #gridDiv {
         width: 100%;
+    }
+}
+#welcome {
         
     }
     #inputName {
